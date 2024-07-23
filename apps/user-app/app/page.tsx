@@ -1,14 +1,23 @@
 "use client";
-import { useBalance } from "@repo/store/useBalance";
+// import { useBalance } from "@repo/store/useBalance";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Page(): JSX.Element {
-  const balance = useBalance();
+  const { data: session, status } = useSession();
 
   return (
     <main>
-      Home Page
-      <div>user balance</div>
-      <div>{balance}</div>
+      <button onClick={() => signOut({ redirect: false })}>Signout</button>
+      <h1>Home Page</h1>
+      {session && (
+        <>
+          <h1>{session.user?.name}</h1>
+          <h1>{session.user?.id}</h1>
+          <h1>{session.user?.email}</h1>
+          <h1>{session.user?.image}</h1>
+          <h1>{status}</h1>
+        </>
+      )}
     </main>
   );
 }
