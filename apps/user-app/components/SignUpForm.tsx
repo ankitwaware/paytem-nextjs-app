@@ -21,7 +21,7 @@ export default function SignUpForm() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<SIgnupFormData>({
     resolver: zodResolver(SIgnupFormSchema),
     defaultValues: {
@@ -56,38 +56,60 @@ export default function SignUpForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)} className="space-y-6">
-      <div>
-        <label htmlFor="username">username</label>
+    <form
+      onSubmit={handleSubmit(onSubmitHandler)}
+      className="flex flex-col justify-evenly space-y-6 self-stretch"
+    >
+      <div className="flex flex-col">
         <input
           {...register("username")}
-          id="username"
           type="text"
-          className="border-2"
+          placeholder="Username"
+          autoComplete="off"
+          className="p-2.5 border border-slate-300  rounded-md"
         />
-        <p>{errors.username?.message}</p>
+        {
+          <p className="text-sm">
+            {errors.username?.message}
+          </p>
+        }
       </div>
-      <div>
-        <label htmlFor="email">email</label>
+      <div className="flex flex-col">
         <input
           {...register("email")}
-          id="email"
           type="email"
-          className="border-2"
+          placeholder="Example@email.com"
+          autoComplete="off"
+          className="p-2.5 border border-slate-300  rounded-md"
         />
-        <p>{errors.email?.message}</p>
+        {
+          <p className="text-sm">
+            {errors.email?.message}
+          </p>
+        }
       </div>
-      <div>
-        <label htmlFor="password">password</label>
+      <div className="flex flex-col">
         <input
           {...register("password")}
           id="password"
           type="password"
-          className="border-2"
+          placeholder="Password"
+          autoComplete="off"
+          className="p-2.5 border border-slate-300  rounded-md"
         />
-        <p>{errors.password?.message}</p>
+        {
+          <p className="text-sm">
+            {errors.password?.message}
+          </p>
+        }
       </div>
-      <button type="submit">Submit</button>
+      <button
+        type="submit"
+        className="border border-blue-500 py-2.5 text-blue-500 rounded-full text-xl font-semibold"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Creating..." : "Sign up"}
+      </button>
     </form>
   );
 }
