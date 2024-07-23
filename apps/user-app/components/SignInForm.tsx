@@ -51,29 +51,42 @@ export default function SignInForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)} className="space-y-6">
-      <div>
-        <label htmlFor="email">Email</label>
+    <form onSubmit={handleSubmit(onSubmitHandler)} className="flex flex-col justify-evenly space-y-6 self-stretch">
+      <div className="flex flex-col">
         <input
           {...register("email")}
-          id="email"
           type="email"
-          className="border-2"
+          placeholder="Example@email.com"
+          autoComplete="off"
+          className="p-2.5 border border-slate-300  rounded-md"
         />
-        <p>{errors.email?.message}</p>
+        {
+          <p className="text-sm">
+            {errors.email?.message}
+          </p>
+        }
       </div>
-      <div>
-        <label htmlFor="password">Password</label>
+      <div className="flex flex-col">
         <input
           {...register("password")}
           id="password"
           type="password"
-          className="border-2"
+          placeholder="Password"
+          autoComplete="off"
+          className="p-2.5 border border-slate-300  rounded-md"
         />
-        <p>{errors.password?.message}</p>
+        {
+          <p className="text-sm">
+            {errors.password?.message}
+          </p>
+        }
       </div>
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Submitting..." : "Submit"}
+      <button
+        type="submit"
+        className="border border-blue-500 py-2.5 text-blue-500 rounded-full text-xl font-semibold"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Submitting..." : "Sign In"}
       </button>
     </form>
   );

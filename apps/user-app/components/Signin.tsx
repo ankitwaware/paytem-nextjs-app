@@ -3,20 +3,15 @@ import { redirect } from "next/navigation";
 import SignInForm from "./SignInForm";
 
 export default async function Signin() {
-  // if  session
   const session = await getServerSession();
-  
-  // redirect to homePage
-  if (session) {
-    console.log(session);
-    redirect("/");
-  }
+  // if user redirect to homePage
+  if (session?.user) redirect("/");
 
   return (
     <section className="bg-white h-screen grid place-items-center">
-      <div className="h-3/5 w-2/3 text-black  border border-grey-400 rounded-xl flex flex-col">
-        <h2>Paytem</h2>
-        <h4>SignUp</h4>
+       <div className="w-3/4 text-black border border-grey-400 rounded-xl flex flex-col justify-between items-center p-8 gap-y-5">
+       <h1 className="text-4xl font-extrabold text-blue-500 italic">Paytem</h1>
+        <h2 className="text-2xl font-semibold">SignIn</h2>
         <SignInForm />
       </div>
     </section>
