@@ -1,5 +1,6 @@
-import Signin from "../../components/Signin";
+import AuthPage from "../../components/authPage";
+
 
 export default function Page() {
-  return <Signin />;
+  return <AuthPage pageType="signin" />;
 }

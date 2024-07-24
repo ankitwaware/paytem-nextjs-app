@@ -28,14 +28,14 @@ model User {
 }
 
 model Account {
-  userId        String      @id
-  type          accountType @default(basicUser)
+  acc_id        String      @id @default(cuid())
+  userId        String
+  type          accountType
   refresh_token String?
   access_token  String?
   expires_at    Int?
   token_type    String?
   scope         String?
-  id_token      String?
   session_state String?
 
   createdAt DateTime @default(now())
@@ -46,12 +46,12 @@ model Account {
 
 model Session {
   sessionToken String   @unique
-  userId       String
-  expires      DateTime
+  userId       String   @id
+  expires      DateTime?
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
 }
 
 model VerificationToken {
@@ -66,3 +66,4 @@ enum accountType {
   basicUser
   merchantUser
 }
+

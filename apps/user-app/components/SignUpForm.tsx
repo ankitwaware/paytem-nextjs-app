@@ -1,22 +1,13 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-const SIgnupFormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Enter a valid email.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-});
-
-type SIgnupFormData = z.infer<typeof SIgnupFormSchema>;
-
+import {
+  SIgnupFormData,
+  SIgnupFormSchema,
+} from "../lib/zodSchema/authFormSchema";
+import FormInput from "./formInput";
+import AuthBtn from "./signInUpBtn";
+import { useRouter } from "next/navigation";
 export default function SignUpForm() {
   const {
     handleSubmit,
@@ -30,6 +21,8 @@ export default function SignUpForm() {
       password: "",
     },
   });
+
+  const router = useRouter();
 
   const onSubmitHandler = async (data: SIgnupFormData) => {
     console.log("Submitting form", data);
@@ -60,56 +53,32 @@ export default function SignUpForm() {
       onSubmit={handleSubmit(onSubmitHandler)}
       className="flex flex-col justify-evenly space-y-6 self-stretch"
     >
-      <div className="flex flex-col">
-        <input
-          {...register("username")}
-          type="text"
-          placeholder="Username"
-          autoComplete="off"
-          className="p-2.5 border border-slate-300  rounded-md"
-        />
-        {
-          <p className="text-sm">
-            {errors.username?.message}
-          </p>
-        }
-      </div>
-      <div className="flex flex-col">
-        <input
-          {...register("email")}
-          type="email"
-          placeholder="Example@email.com"
-          autoComplete="off"
-          className="p-2.5 border border-slate-300  rounded-md"
-        />
-        {
-          <p className="text-sm">
-            {errors.email?.message}
-          </p>
-        }
-      </div>
-      <div className="flex flex-col">
-        <input
-          {...register("password")}
-          id="password"
-          type="password"
-          placeholder="Password"
-          autoComplete="off"
-          className="p-2.5 border border-slate-300  rounded-md"
-        />
-        {
-          <p className="text-sm">
-            {errors.password?.message}
-          </p>
-        }
-      </div>
-      <button
-        type="submit"
-        className="border border-blue-500 py-2.5 text-blue-500 rounded-full text-xl font-semibold"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Creating..." : "Sign up"}
-      </button>
+      <FormInput
+        formRegister={register("username")}
+        type="email"
+        placeholder="Username"
+        errorMsg={errors.username?.message}
+      />
+
+      <FormInput
+        formRegister={register("email")}
+        type="email"
+        placeholder="Example@email.com"
+        errorMsg={errors.email?.message}
+      />
+
+      <FormInput
+        formRegister={register("password")}
+        type="password"
+        placeholder="Password"
+        errorMsg={errors.password?.message}
+      />
+
+      <AuthBtn
+        isSubmitting={isSubmitting}
+        pageType="signup"
+        onClickHandler={() => router.push("/signin")}
+      />
     </form>
   );
 }

@@ -1,5 +1,5 @@
-import Signup from "../../components/Signup";
+import AuthPage from "../../components/authPage";
 
 export default function Page() {
-  return <Signup />;
+  return <AuthPage pageType="signup" />;
 }

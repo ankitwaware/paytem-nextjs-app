@@ -1,9 +1,12 @@
 "use client";
 // import { useBalance } from "@repo/store/useBalance";
 import { signOut, useSession } from "next-auth/react";
+// import { redirect } from "next/navigation";
 
 export default function Page(): JSX.Element {
   const { data: session, status } = useSession();
+
+  
 
   return (
     <main>

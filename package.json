@@ -23,6 +23,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "next-auth": "^4.24.7"
+    "next-auth": "^4.24.7",
+    "bcrypt": "^5.1.1"
   }
 }

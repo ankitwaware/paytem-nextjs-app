@@ -1,20 +1,15 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-
-const SIgnInFormSchema = z.object({
-  email: z.string().email({
-    message: "Enter a valid email.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
-});
-
-type SIgnInFormData = z.infer<typeof SIgnInFormSchema>;
+import {
+  SIgnInFormData,
+  SIgnInFormSchema,
+} from "../lib/zodSchema/authFormSchema";
+import FormInput from "./formInput";
+import AuthBtn from "./signInUpBtn";
+import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
   const {
@@ -28,6 +23,8 @@ export default function SignInForm() {
       password: "",
     },
   });
+
+  const router = useRouter();
 
   const onSubmitHandler = async (data: SIgnInFormData) => {
     console.log("SIgnin Form", data);
@@ -51,43 +48,29 @@ export default function SignInForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)} className="flex flex-col justify-evenly space-y-6 self-stretch">
-      <div className="flex flex-col">
-        <input
-          {...register("email")}
-          type="email"
-          placeholder="Example@email.com"
-          autoComplete="off"
-          className="p-2.5 border border-slate-300  rounded-md"
-        />
-        {
-          <p className="text-sm">
-            {errors.email?.message}
-          </p>
-        }
-      </div>
-      <div className="flex flex-col">
-        <input
-          {...register("password")}
-          id="password"
-          type="password"
-          placeholder="Password"
-          autoComplete="off"
-          className="p-2.5 border border-slate-300  rounded-md"
-        />
-        {
-          <p className="text-sm">
-            {errors.password?.message}
-          </p>
-        }
-      </div>
-      <button
-        type="submit"
-        className="border border-blue-500 py-2.5 text-blue-500 rounded-full text-xl font-semibold"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? "Submitting..." : "Sign In"}
-      </button>
+    <form
+      onSubmit={handleSubmit(onSubmitHandler)}
+      className="flex flex-col justify-evenly space-y-6 self-stretch"
+    >
+      <FormInput
+        formRegister={register("email")}
+        type="email"
+        placeholder="Example@email.com"
+        errorMsg={errors.email?.message}
+      />
+
+      <FormInput
+        formRegister={register("password")}
+        type="password"
+        placeholder="Password"
+        errorMsg={errors.password?.message}
+      />
+
+      <AuthBtn
+        isSubmitting={isSubmitting}
+        pageType="signin"
+        onClickHandler={() => router.push("/signup")}
+      />
     </form>
   );
 }

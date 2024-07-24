@@ -5,13 +5,15 @@
     "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate",
     "db:push": "npx prisma db push --skip-generate",
+    "db:seed": "npx ts-node prisma/seed.ts",
     "db:studio": "npx prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "5.11.0"
+    "@prisma/client": "^5.17.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "prisma": "5.11.0"
+    "prisma": "^5.17.0"
   },
   "exports": {
     "./client": "./src/index.ts"
