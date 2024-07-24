@@ -12,6 +12,8 @@ const SIgnupFormSchema = z.object({
   }),
 });
 
+
+
 const SIgnInFormSchema = SIgnupFormSchema.omit({ username: true });
 
 export type SIgnInFormData = z.infer<typeof SIgnInFormSchema>;

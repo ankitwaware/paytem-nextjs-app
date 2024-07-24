@@ -2,41 +2,10 @@ import { NextAuthOptions } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { PrismaClient } from "@repo/database/client";
+import { genrateJWT } from "./genrateJWT";
+import { session, token } from "./interfaces";
 
 const client = new PrismaClient();
-
-import { Session } from "next-auth";
-import { JWT } from "next-auth/jwt";
-import { importJWK, JWTPayload, SignJWT } from "jose";
-
-export interface session extends Session {
-  user: {
-    id: string;
-    jwtToken: string;
-    email: string;
-    name: string;
-    type?: string;
-  };
-}
-
-export interface token extends JWT {
-  uid: string;
-  jwtToken: string;
-}
-
-export const genrateJWT = async (payload: JWTPayload) => {
-  const secret = process.env.JWT_SECRET || "secret";
-
-  const jwk = await importJWK({ k: secret, alg: "HS256", kty: "oct" });
-
-  const jwt = await new SignJWT(payload)
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuedAt()
-    .setExpirationTime("365d")
-    .sign(jwk);
-
-  return jwt;
-};
 
 export const NEXT_AUTH_CONFIG = {
   providers: [
@@ -52,7 +21,6 @@ export const NEXT_AUTH_CONFIG = {
       },
       async authorize(credentials: any) {
         try {
-          console.log("crede", credentials);
           // find user in Databse
           const userdb = await client.user.findFirst({
             where: {
@@ -71,20 +39,29 @@ export const NEXT_AUTH_CONFIG = {
             userdb.password &&
             (await compare(credentials.password || "", userdb!.password))
           ) {
-            // valid user
-
             // genrate new JWT
             const jwt = await genrateJWT({
               id: userdb.id,
             });
 
-            // TODO  add Account and Session in DB
+            // TODO Add Session in DB
+            const userAccount = await client.account.findFirst({
+              where: {
+                userId: userdb?.id,
+                type: "basicUser",
+              },
+              select: {
+                type: true,
+                acc_id: true,
+              },
+            });
 
             return {
               id: userdb.id,
               name: userdb.name,
               email: userdb.email,
               token: jwt,
+              account: { type: userAccount?.type, acc_id: userAccount?.acc_id },
             };
           }
 
@@ -99,22 +76,26 @@ export const NEXT_AUTH_CONFIG = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret3",
   callbacks: {
-    jwt: async ({ token, user }: any) => {
+    jwt: async (params: any) => {
       // Persist the OAuth access_token and or the user id to the token right after signin
-      const newToken = token as token;
-      if (user) {
-        newToken.uid = user.id;
-        newToken.jwtToken = user.token;
+      console.log("jwtCall", params);
+      const newToken = params.token as token;
+      if (params.user) {
+        newToken.uid = params.user.id;
+        newToken.jwtToken = params.user.token;
+        
       }
-      console.log("jwt", newToken);
       return newToken;
     },
-    session: ({ session, token }: any) => {
+    session: (params: any) => {
       // Send properties to the client, like an access_token and user id from a provider.
-      const newSession: session = session as session;
-      if (newSession.user && token.uid) {
-        newSession.user.id = token.uid;
-        newSession.user.jwtToken = token.jwtToken;
+      console.log("sessCall", params);
+      const newSession: session = params.session as session;
+      if (newSession.user && params.token.uid && params.token.account) {
+        newSession.user.id = params.token.uid;
+        newSession.user.jwtToken = params.token.jwtToken;
+        newSession.user.account.acc_id = params.token.acc_id;
+        newSession.user.account.type = params.token.type;
       }
       console.log("session", newSession);
       return newSession;

@@ -8,6 +8,7 @@ import {
 import FormInput from "./formInput";
 import AuthBtn from "./signInUpBtn";
 import { useRouter } from "next/navigation";
+
 export default function SignUpForm() {
   const {
     handleSubmit,
@@ -41,6 +42,9 @@ export default function SignUpForm() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
+      console.log("SIgn Up Res", response);
+
       // Process response here
       console.log("Registration Successful", response);
     } catch (error) {
@@ -55,7 +59,7 @@ export default function SignUpForm() {
     >
       <FormInput
         formRegister={register("username")}
-        type="email"
+        type="text"
         placeholder="Username"
         errorMsg={errors.username?.message}
       />
