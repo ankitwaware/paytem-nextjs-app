@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import {
   SIgnInFormData,
@@ -13,8 +13,9 @@ import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
   const {
-    handleSubmit,
+    control,
     register,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<SIgnInFormData>({
     resolver: zodResolver(SIgnInFormSchema),
@@ -22,34 +23,45 @@ export default function SignInForm() {
       email: "",
       password: "",
     },
+    progressive: true,
   });
 
   const router = useRouter();
 
-  const onSubmitHandler = async (data: SIgnInFormData) => {
-    console.log("SIgnin Form", data);
+  async function onSubmitHandler({ data }: { data: SIgnInFormData }) {
+    console.log("SIgnin Form data", data);
     const { email, password } = data;
     try {
       const response = await signIn("credentials", {
-        username: email,
+        email,
         password,
+        redirect: false,
       });
-      console.log("sign in res", response);
 
       if (!response!.ok) {
-        throw new Error("Network response was not ok");
+        setError("root.serverError", {
+          message: "Please enter valid email/password",
+        });
+        return response;
       }
+
       // Process response here
-      console.log("Login Successful", response);
+      if (response!.ok) {
+        router.push("/");
+        return response;
+      }
     } catch (error) {
       console.log(error);
-      console.log("Login Failed", error);
+      console.log("signIn Failed", error);
     }
-  };
+  }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmitHandler)}
+    <Form
+      control={control}
+      onSubmit={onSubmitHandler}
+      headers={{ "Content-Type": "application/json" }}
+      validateStatus={(status) => status === 200}
       className="flex flex-col justify-evenly space-y-6 self-stretch"
     >
       <FormInput
@@ -66,11 +78,14 @@ export default function SignInForm() {
         errorMsg={errors.password?.message}
       />
 
+      {/* server error message */}
+      {errors?.root?.serverError && <p>{errors?.root?.serverError?.message}</p>}
+
       <AuthBtn
         isSubmitting={isSubmitting}
         pageType="signin"
         onClickHandler={() => router.push("/signup")}
       />
-    </form>
+    </Form>
   );
 }

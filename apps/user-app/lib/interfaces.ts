@@ -17,4 +17,8 @@ export interface session extends Session {
 export interface token extends JWT {
   uid: string;
   jwtToken: string;
+  account: {
+    acc_id: string;
+    type: string;
+  };
 }

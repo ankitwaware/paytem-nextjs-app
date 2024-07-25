@@ -3,6 +3,7 @@
   "globalDependencies": [
     "**/.env .*local"
   ],
+  "globalEnv": ["NEXTAUTH_SECRET","NEXTAUTH_URL","JWT_SECRET"],
   "pipeline": {
     "build": {
       "dependsOn": [

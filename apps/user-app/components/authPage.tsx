@@ -8,9 +8,10 @@ type authPageProp = {
 };
 
 export default async function AuthPage({ pageType }: authPageProp) {
+  // TODO add redirect to home page after user session
   const session = await getServerSession();
-  // if user redirect to homePage
-  if (session?.user) redirect("/");
+
+  if (session?.user?.email) redirect("/");
 
   return (
     <section className="bg-white h-screen grid place-items-center">
@@ -23,14 +24,4 @@ export default async function AuthPage({ pageType }: authPageProp) {
       </div>
     </section>
   );
-}
-
-{
-  /* <p onClick={() => {
-  if(pageType == "signin") {
-    redirect("/signup")
-  }else {
-    redirect("/signin")
-  }
-}}>{pageType == "signin" ? "create account SignUp" : "SignIn"}</p> */
 }

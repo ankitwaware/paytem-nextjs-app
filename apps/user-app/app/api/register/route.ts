@@ -5,25 +5,66 @@ import { SIgnupFormSchema } from "../../../lib/zodSchema/authFormSchema";
 
 const client = new PrismaClient();
 
+export type signUpResBody = {
+  message: string;
+  username?: { name: "username"; message: string };
+  email?: { name: "email"; message: string };
+  password?: { name: "password"; message: string };
+  data?: {
+    email: string;
+    password: string;
+  };
+};
+
 export async function POST(request: Request) {
   try {
     const { username, email, password } = await request.json();
 
-    console.log("sending db data POST", username, email, password);
+    console.log(
+      "SIgn Up Data at /api/register POST",
+      username,
+      email,
+      password
+    );
 
-    //TODO YOU MAY WANT TO ADD SOME VALIDATION HERE
+    //VALIDATION FOR SIGNUP ON SERVER
     const result = SIgnupFormSchema.safeParse({
       username,
       email,
       password,
     });
 
+    // input error
     if (!result.success) {
       const formatted = result.error.format();
-      return formatted;
+
+      let messageString = "Please Enter Valid";
+
+      if (formatted.username) messageString + "/username";
+      if (formatted.email) messageString + "/email";
+      if (formatted.password) messageString + "/password";
+
+      return NextResponse.json<signUpResBody>(
+        {
+          message: messageString + ".",
+          username: {
+            name: "username",
+            message: formatted.username?._errors[0]!,
+          },
+          email: {
+            name: "email",
+            message: formatted.email?._errors[0]!,
+          },
+          password: {
+            name: "password",
+            message: formatted.password?._errors[0]!,
+          },
+        },
+        { status: 403 }
+      );
     }
 
-    // email used
+    // email in databse
     const existingUser = await client.user.findFirst({
       where: {
         email: email,
@@ -34,9 +75,13 @@ export async function POST(request: Request) {
     });
 
     if (existingUser) {
-      return NextResponse.json(
-        { message: "Email already in use" },
-        { status: 404 }
+      return NextResponse.json<signUpResBody>(
+        {
+          message: "Email Already Used. Enter different email",
+        },
+        {
+          status: 401,
+        }
       );
     }
 
@@ -52,15 +97,24 @@ export async function POST(request: Request) {
       },
     });
 
-    const newAccount = await client.account.create({
+    await client.account.create({
       data: {
         userId: newUser.id,
         type: "basicUser",
       },
     });
 
-    return NextResponse.json({ message: "success", newUser, newAccount });
+    return NextResponse.json<signUpResBody>(
+      {
+        message: "Registration Success",
+        data: { email: email, password: password },
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    console.log(error);
+    return NextResponse.json<signUpResBody>(
+      { message: "Plese Enter valid /username/email/password" },
+      { status: 500 }
+    );
   }
 }

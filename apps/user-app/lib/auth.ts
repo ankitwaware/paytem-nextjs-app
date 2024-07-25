@@ -13,18 +13,18 @@ export const NEXT_AUTH_CONFIG = {
       name: "Credential",
       credentials: {
         username: {
-          label: "username",
+          label: "email",
           type: "email",
           placeholder: "example@email.com",
         },
         password: { label: "password", type: "password" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: any): Promise<any> {
         try {
           // find user in Databse
           const userdb = await client.user.findFirst({
             where: {
-              email: credentials.username,
+              email: credentials.email,
             },
             select: {
               id: true,
@@ -34,11 +34,16 @@ export const NEXT_AUTH_CONFIG = {
             },
           });
 
-          if (
-            userdb &&
-            userdb.password &&
-            (await compare(credentials.password || "", userdb!.password))
-          ) {
+          if (!userdb) return null;
+
+          const correctPassword = await compare(
+            credentials.password || "",
+            userdb!.password
+          );
+
+          if (!correctPassword) return null;
+
+          if (userdb && correctPassword) {
             // genrate new JWT
             const jwt = await genrateJWT({
               id: userdb.id,
@@ -65,8 +70,6 @@ export const NEXT_AUTH_CONFIG = {
             };
           }
 
-          // user not in db
-          console.log("not in db");
           return null;
         } catch (error) {
           console.log(error);
@@ -76,28 +79,23 @@ export const NEXT_AUTH_CONFIG = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret3",
   callbacks: {
-    jwt: async (params: any) => {
-      // Persist the OAuth access_token and or the user id to the token right after signin
-      console.log("jwtCall", params);
-      const newToken = params.token as token;
-      if (params.user) {
-        newToken.uid = params.user.id;
-        newToken.jwtToken = params.user.token;
-        
+    jwt: async ({ token, user }) => {
+      const newToken = token as token;
+      if (user) {
+        newToken.uid = user.id;
+        newToken.jwtToken = user.token;
+        newToken.account = user.account;
       }
       return newToken;
     },
-    session: (params: any) => {
-      // Send properties to the client, like an access_token and user id from a provider.
-      console.log("sessCall", params);
-      const newSession: session = params.session as session;
-      if (newSession.user && params.token.uid && params.token.account) {
-        newSession.user.id = params.token.uid;
-        newSession.user.jwtToken = params.token.jwtToken;
-        newSession.user.account.acc_id = params.token.acc_id;
-        newSession.user.account.type = params.token.type;
+    session: ({ session, token }) => {
+      const newSession: session = session as session;
+      if (newSession.user && token.uid && token.account) {
+        newSession.user.id = token.uid as string;
+        newSession.user.jwtToken = token.jwtToken as string;
+        newSession.user.account = token.account as session["user"]["account"];
       }
-      console.log("session", newSession);
+      // TODO ADD USER SESSION IN DB
       return newSession;
     },
   },

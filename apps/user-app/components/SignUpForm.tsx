@@ -1,18 +1,21 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Form, useForm } from "react-hook-form";
 import {
   SIgnupFormData,
   SIgnupFormSchema,
 } from "../lib/zodSchema/authFormSchema";
 import FormInput from "./formInput";
 import AuthBtn from "./signInUpBtn";
+import { signUpResBody } from "../app/api/register/route";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
   const {
-    handleSubmit,
+    control,
     register,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<SIgnupFormData>({
     resolver: zodResolver(SIgnupFormSchema),
@@ -21,40 +24,80 @@ export default function SignUpForm() {
       email: "",
       password: "",
     },
+    progressive: true,
   });
+
+  async function onSuccessHandler({
+    response: signUpResponse,
+  }: {
+    response: Response;
+  }) {
+    try {
+      const Responsebody: signUpResBody = await signUpResponse.json();
+
+      const res = await signIn("credentials", {
+        email: Responsebody.data?.email,
+        password: Responsebody.data?.password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        setError("root.serverError", {
+          message: "Signin error after succes",
+        });
+      }
+
+      // if all well
+      if (res?.ok) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+      setError("root.serverError", {
+        message: "Signin error after succes",
+      });
+    }
+  }
+
+  async function onErrorHandler(params: any) {
+    const { response } = params as { response: Response };
+
+    const Responsebody: signUpResBody = await response.json();
+
+    setError("root.serverError", {
+      type: response.status + "",
+      message: Responsebody.message,
+    });
+
+    if (Responsebody.username) {
+      setError("username", {
+        message: Responsebody.username.message,
+      });
+    }
+    if (Responsebody.email) {
+      setError("email", {
+        message: Responsebody.email.message,
+      });
+    }
+    if (Responsebody.password) {
+      setError("password", {
+        message: Responsebody.password.message,
+      });
+    }
+  }
 
   const router = useRouter();
 
-  const onSubmitHandler = async (data: SIgnupFormData) => {
-    console.log("Submitting form", data);
-
-    const { username, email, password } = data;
-
-    try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      console.log("SIgn Up Res", response);
-
-      // Process response here
-      console.log("Registration Successful", response);
-    } catch (error) {
-      console.error("Registration Failed:", error);
-    }
-  };
-
   return (
-    <form
-      onSubmit={handleSubmit(onSubmitHandler)}
+    <Form
+      action={"/api/register"}
+      control={control}
+      method="post"
+      // onSubmit={onSubmitHandler} // function to be called before the request
+      onSuccess={onSuccessHandler} // valid response
+      onError={onErrorHandler} // error response
+      headers={{ "Content-Type": "application/json" }}
+      validateStatus={(status) => status === 201}
       className="flex flex-col justify-evenly space-y-6 self-stretch"
     >
       <FormInput
@@ -78,11 +121,14 @@ export default function SignUpForm() {
         errorMsg={errors.password?.message}
       />
 
+      {/* server error message */}
+      {errors?.root?.serverError && <p>{errors?.root?.serverError?.message}</p>}
+
       <AuthBtn
         isSubmitting={isSubmitting}
         pageType="signup"
         onClickHandler={() => router.push("/signin")}
       />
-    </form>
+    </Form>
   );
 }
