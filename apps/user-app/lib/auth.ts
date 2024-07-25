@@ -4,11 +4,17 @@ import { compare } from "bcrypt";
 import { PrismaClient } from "@repo/database/client";
 import { genrateJWT } from "./genrateJWT";
 import { session, token } from "./interfaces";
+import GoogleProvider from "next-auth/providers/google";
 
 const client = new PrismaClient();
 
+
 export const NEXT_AUTH_CONFIG = {
   providers: [
+    GoogleProvider({ 
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
     credentialsProvider({
       name: "Credential",
       credentials: {
@@ -79,6 +85,16 @@ export const NEXT_AUTH_CONFIG = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret3",
   callbacks: {
+    async signIn(params) {
+      // const { account, profile } = params;
+      console.log("sign in callback", params);
+      // if (account!.provider === "google") {
+      //   return (
+      //     profile?.email_verified && profile.email.endsWith("@example.com")
+      //   );
+      // }
+      return true; // Do different verification for other providers that don't have `email_verified`
+    },
     jwt: async ({ token, user }) => {
       const newToken = token as token;
       if (user) {
@@ -86,6 +102,7 @@ export const NEXT_AUTH_CONFIG = {
         newToken.jwtToken = user.token;
         newToken.account = user.account;
       }
+      console.log("new JWT to user", newToken);
       return newToken;
     },
     session: ({ session, token }) => {
@@ -96,6 +113,7 @@ export const NEXT_AUTH_CONFIG = {
         newSession.user.account = token.account as session["user"]["account"];
       }
       // TODO ADD USER SESSION IN DB
+      console.log("new session to user", session);
       return newSession;
     },
   },

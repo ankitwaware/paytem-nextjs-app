@@ -57,35 +57,40 @@ export default function SignInForm() {
   }
 
   return (
-    <Form
-      control={control}
-      onSubmit={onSubmitHandler}
-      headers={{ "Content-Type": "application/json" }}
-      validateStatus={(status) => status === 200}
-      className="flex flex-col justify-evenly space-y-6 self-stretch"
-    >
-      <FormInput
-        formRegister={register("email")}
-        type="email"
-        placeholder="Example@email.com"
-        errorMsg={errors.email?.message}
-      />
+    <>
+      <Form
+        control={control}
+        onSubmit={onSubmitHandler}
+        headers={{ "Content-Type": "application/json" }}
+        validateStatus={(status) => status === 200}
+        className="flex flex-col justify-evenly space-y-6 self-stretch"
+      >
+        <FormInput
+          formRegister={register("email")}
+          type="email"
+          placeholder="Example@email.com"
+          errorMsg={errors.email?.message}
+        />
 
-      <FormInput
-        formRegister={register("password")}
-        type="password"
-        placeholder="Password"
-        errorMsg={errors.password?.message}
-      />
+        <FormInput
+          formRegister={register("password")}
+          type="password"
+          placeholder="Password"
+          errorMsg={errors.password?.message}
+        />
 
-      {/* server error message */}
-      {errors?.root?.serverError && <p>{errors?.root?.serverError?.message}</p>}
+        {/* server error message */}
+        {errors?.root?.serverError && (
+          <p>{errors?.root?.serverError?.message}</p>
+        )}
 
-      <AuthBtn
-        isSubmitting={isSubmitting}
-        pageType="signin"
-        onClickHandler={() => router.push("/signup")}
-      />
-    </Form>
+        <AuthBtn
+          isSubmitting={isSubmitting}
+          pageType="signin"
+          onClickHandler={() => router.push("/signup")}
+        />
+      </Form>
+      <button onClick={() => signIn("google")}>sign in with gooogle</button>
+    </>
   );
 }
