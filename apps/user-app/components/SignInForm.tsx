@@ -10,12 +10,14 @@ import {
 import FormInput from "./formInput";
 import AuthBtn from "./signInUpBtn";
 import { useRouter } from "next/navigation";
+import FormBtn from "./formBtn";
 
 export default function SignInForm() {
   const {
     control,
     register,
     setError,
+
     formState: { errors, isSubmitting },
   } = useForm<SIgnInFormData>({
     resolver: zodResolver(SIgnInFormSchema),
@@ -39,6 +41,8 @@ export default function SignInForm() {
       });
 
       if (!response!.ok) {
+        console.log(response);
+
         setError("root.serverError", {
           message: "Please enter valid email/password",
         });
@@ -51,8 +55,10 @@ export default function SignInForm() {
         return response;
       }
     } catch (error) {
-      console.log(error);
-      console.log("signIn Failed", error);
+      return Response.json(
+        { message: "Something Went Wrong.Try Again" },
+        { status: 500 },
+      );
     }
   }
 
@@ -63,7 +69,7 @@ export default function SignInForm() {
         onSubmit={onSubmitHandler}
         headers={{ "Content-Type": "application/json" }}
         validateStatus={(status) => status === 200}
-        className="flex flex-col justify-evenly space-y-6 self-stretch"
+        className="flex flex-col justify-evenly space-y-3 self-stretch"
       >
         <FormInput
           formRegister={register("email")}
@@ -81,16 +87,40 @@ export default function SignInForm() {
 
         {/* server error message */}
         {errors?.root?.serverError && (
-          <p>{errors?.root?.serverError?.message}</p>
+          <p className="text-sm">{errors?.root?.serverError?.message}</p>
         )}
 
-        <AuthBtn
+        <FormBtn
+          type="submit"
+          btnText="SIgnIn"
           isSubmitting={isSubmitting}
-          pageType="signin"
-          onClickHandler={() => router.push("/signup")}
+          className="text-white"
         />
+
+        <FormBtn
+          type="button"
+          btnText="SIgnUp"
+          whiteBtn={true}
+          className="text-white"
+          onClick={() => router.push("/signup")}
+        />
+
+        {/* <hr className="h-0.5 bg-black" />
+
+        <FormBtn
+          type="button"
+          btnText="SIgnIn with google"
+          onClick={() => signIn("google")}
+          whiteBtn={true}
+        />
+
+        <FormBtn
+          type="button"
+          btnText="SIgnIn with github"
+          onClick={() => signIn("github")}
+          whiteBtn={true}
+        /> */}
       </Form>
-      <button onClick={() => signIn("google")}>sign in with gooogle</button>
     </>
   );
 }

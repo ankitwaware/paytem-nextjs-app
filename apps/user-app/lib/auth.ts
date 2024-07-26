@@ -5,32 +5,40 @@ import { PrismaClient } from "@repo/database/client";
 import { genrateJWT } from "./genrateJWT";
 import { session, token } from "./interfaces";
 import GoogleProvider from "next-auth/providers/google";
+import { JWT } from "next-auth/jwt";
 
 const client = new PrismaClient();
 
-
 export const NEXT_AUTH_CONFIG = {
   providers: [
-    GoogleProvider({ 
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      // ask for permission on every time
+      // authorization: {
+      //   params: {
+      //     prompt: "consent",
+      //     access_type: "offline",
+      //     response_type: "code"
+      //   }
+      // }
     }),
     credentialsProvider({
       name: "Credential",
       credentials: {
-        username: {
+        email: {
           label: "email",
           type: "email",
           placeholder: "example@email.com",
         },
         password: { label: "password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials): Promise<any> {
         try {
           // find user in Databse
           const userdb = await client.user.findFirst({
             where: {
-              email: credentials.email,
+              email: credentials?.email,
             },
             select: {
               id: true,
@@ -40,11 +48,9 @@ export const NEXT_AUTH_CONFIG = {
             },
           });
 
-          if (!userdb) return null;
-
           const correctPassword = await compare(
-            credentials.password || "",
-            userdb!.password
+            credentials?.password || "",
+            userdb!.password,
           );
 
           if (!correctPassword) return null;
@@ -68,10 +74,10 @@ export const NEXT_AUTH_CONFIG = {
             });
 
             return {
-              id: userdb.id,
+              uid: userdb.id,
               name: userdb.name,
               email: userdb.email,
-              token: jwt,
+              jwtToken: jwt,
               account: { type: userAccount?.type, acc_id: userAccount?.acc_id },
             };
           }
@@ -79,6 +85,7 @@ export const NEXT_AUTH_CONFIG = {
           return null;
         } catch (error) {
           console.log(error);
+          return null;
         }
       },
     }),
@@ -95,22 +102,24 @@ export const NEXT_AUTH_CONFIG = {
       // }
       return true; // Do different verification for other providers that don't have `email_verified`
     },
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user }: { token: JWT; user: any }) => {
       const newToken = token as token;
+      // console.log("JWT callback params", token, user);
       if (user) {
-        newToken.uid = user.id;
-        newToken.jwtToken = user.token;
+        newToken.uid = user.uid;
+        newToken.jwtToken = user.jwtToken;
         newToken.account = user.account;
       }
       console.log("new JWT to user", newToken);
       return newToken;
     },
-    session: ({ session, token }) => {
-      const newSession: session = session as session;
+    session: ({ session, token, user }) => {
+      const newSession = session as session;
+      // console.log("session callback params", session, token, user);
       if (newSession.user && token.uid && token.account) {
-        newSession.user.id = token.uid as string;
-        newSession.user.jwtToken = token.jwtToken as string;
-        newSession.user.account = token.account as session["user"]["account"];
+        newSession.user.uid = token.uid as token["uid"];
+        newSession.user.jwtToken = token.jwtToken as token["jwtToken"];
+        newSession.user.account = token.account as token["account"];
       }
       // TODO ADD USER SESSION IN DB
       console.log("new session to user", session);

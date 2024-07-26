@@ -14,56 +14,50 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  password      String
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int                 @id @default(autoincrement())
+  name              String?
+  email             String?             @unique
+  password          String
+  phoneNumber       String              @unique
+  balance           Balance[]
+  onRampTransaction OnRampTransaction[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
-model Account {
-  acc_id        String      @id @default(cuid())
-  userId        String
-  type          accountType
-  refresh_token String?
-  access_token  String?
-  expires_at    Int?
-  token_type    String?
-  scope         String?
-  session_state String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Merchant {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  auth_type authType
 }
 
-model Session {
-  sessionToken String   @unique
-  userId       String   @id
-  expires      DateTime?
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime? @updatedAt
+model Balance {
+  id     Int  @id @default(autoincrement())
+  userId Int  @unique
+  amount Int
+  locked Int
+  User   User @relation(fields: [userId], references: [id])
 }
 
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@id([identifier, token])
+model OnRampTransaction {
+  id        Int          @id @default(autoincrement())
+  status    onRampStatus
+  token     String       @unique
+  amount    Int
+  provider  String
+  startTime DateTime     @default(now())
+  userId    Int
+  User      User         @relation(fields: [userId], references: [id])
 }
 
-enum accountType {
-  basicUser
-  merchantUser
+enum authType {
+  google
+  github
 }
 
+enum onRampStatus {
+  Success
+  failure
+  Processing
+}

@@ -1,9 +1,0 @@
--- AlterTable
-ALTER TABLE "Merchant" ALTER COLUMN "mobileNumber" DROP NOT NULL,
-ALTER COLUMN "email" DROP NOT NULL,
-ALTER COLUMN "auth_type" DROP NOT NULL;
-
--- AlterTable
-ALTER TABLE "User" ALTER COLUMN "mobileNumber" DROP NOT NULL,
-ALTER COLUMN "email" DROP NOT NULL,
-ALTER COLUMN "auth_type" DROP NOT NULL;

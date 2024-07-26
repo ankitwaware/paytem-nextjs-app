@@ -5,7 +5,8 @@
     "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate",
     "db:push": "npx prisma db push --skip-generate",
-    "db:seed": "npx ts-node prisma/seed.ts",
+    "db:seed": "npx ts-node ./prisma/seed.ts",
+    "db:test": "npx ts-node ./src/test",
     "db:studio": "npx prisma studio"
   },
   "dependencies": {

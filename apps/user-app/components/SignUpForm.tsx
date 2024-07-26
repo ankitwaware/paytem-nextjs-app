@@ -10,6 +10,7 @@ import AuthBtn from "./signInUpBtn";
 import { signUpResBody } from "../app/api/register/route";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import FormBtn from "./formBtn";
 
 export default function SignUpForm() {
   const {
@@ -98,7 +99,7 @@ export default function SignUpForm() {
       onError={onErrorHandler} // error response
       headers={{ "Content-Type": "application/json" }}
       validateStatus={(status) => status === 201}
-      className="flex flex-col justify-evenly space-y-6 self-stretch"
+      className="flex flex-col justify-evenly space-y-3 self-stretch"
     >
       <FormInput
         formRegister={register("username")}
@@ -122,13 +123,28 @@ export default function SignUpForm() {
       />
 
       {/* server error message */}
-      {errors?.root?.serverError && <p>{errors?.root?.serverError?.message}</p>}
+      {errors?.root?.serverError && <p className="text-sm">{errors?.root?.serverError?.message}</p>}
 
-      <AuthBtn
+      <FormBtn
+        type="submit"
+        btnText="SIgnUp"
         isSubmitting={isSubmitting}
-        pageType="signup"
-        onClickHandler={() => router.push("/signin")}
+        className="text-white"
       />
+
+      <FormBtn
+        type="button"
+        btnText="SIgnIn"
+        whiteBtn={true}
+        className="text-white"
+        onClick={() => router.push("/signin")}
+      />
+
+      {/* <hr className="h-0.5 bg-black" />
+
+      <FormBtn type="button" btnText="SIgnUp with google" whiteBtn={true} />
+
+      <FormBtn type="button" btnText="SIgnUp with github" whiteBtn={true} /> */}
     </Form>
   );
 }

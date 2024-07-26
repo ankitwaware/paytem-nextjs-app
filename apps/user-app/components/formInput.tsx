@@ -3,6 +3,7 @@ interface FormInputProp {
   placeholder: string;
   errorMsg: string | undefined;
   formRegister: any;
+  className?:string;
 }
 
 export default function FormInput(prop: FormInputProp) {
@@ -13,7 +14,7 @@ export default function FormInput(prop: FormInputProp) {
         type={prop.type}
         placeholder={prop.placeholder}
         autoComplete="off"
-        className="p-2.5 border border-slate-300  rounded-md"
+        className={`p-2 pl-4 border border-slate-300  rounded-md ${prop.className}`}
       />
       {<p className="text-sm">{prop.errorMsg}</p>}
     </div>

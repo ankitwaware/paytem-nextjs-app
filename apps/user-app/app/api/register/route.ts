@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       "SIgn Up Data at /api/register POST",
       username,
       email,
-      password
+      password,
     );
 
     //VALIDATION FOR SIGNUP ON SERVER
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
             message: formatted.password?._errors[0]!,
           },
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
         },
         {
           status: 401,
-        }
+        },
       );
     }
 
@@ -109,12 +109,12 @@ export async function POST(request: Request) {
         message: "Registration Success",
         data: { email: email, password: password },
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return NextResponse.json<signUpResBody>(
-      { message: "Plese Enter valid /username/email/password" },
-      { status: 500 }
+      { message: "Something Went Wrong.Try Again" },
+      { status: 500 },
     );
   }
 }

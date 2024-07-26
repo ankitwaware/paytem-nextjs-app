@@ -9,6 +9,7 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^2.4.1",
     "@hookform/resolvers": "^3.9.0",
     "@repo/database": "*",
     "@repo/store": "*",
