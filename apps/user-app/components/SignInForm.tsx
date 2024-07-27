@@ -8,9 +8,8 @@ import {
   SIgnInFormSchema,
 } from "../lib/zodSchema/authFormSchema";
 import FormInput from "./formInput";
-import AuthBtn from "./signInUpBtn";
 import { useRouter } from "next/navigation";
-import FormBtn from "./formBtn";
+import FormBtn from "../lib/formBtn";
 
 export default function SignInForm() {
   const {
@@ -92,17 +91,16 @@ export default function SignInForm() {
 
         <FormBtn
           type="submit"
-          btnText="SIgnIn"
+          btnText="SignIn"
           isSubmitting={isSubmitting}
-          className="text-white"
+          className="text-white bg-blue-600"
         />
 
         <FormBtn
           type="button"
-          btnText="SIgnUp"
-          whiteBtn={true}
-          className="text-white"
+          btnText="SignUp"
           onClick={() => router.push("/signup")}
+          className="text-blue-600"
         />
 
         {/* <hr className="h-0.5 bg-black" />

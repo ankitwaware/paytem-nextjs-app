@@ -1,5 +1,5 @@
 interface FormInputProp {
-  type: string;
+  type?: string | "text";
   placeholder: string;
   errorMsg: string | undefined;
   formRegister: any;

@@ -1,30 +1,16 @@
-import React from "react";
-import Navbar from "../components/navbar";
+"use client";
 import { useSession } from "next-auth/react";
-import { redirect,RedirectType } from "next/navigation";
+import { redirect } from "next/navigation";
+import React from "react";
 
-export default function LandingPage(): React.JSX.Element {
-  const { data: session, status } = useSession();
+export default  function LandingPage() {
+  const session = useSession();
 
-  if (!session) {
-    redirect("/signin",RedirectType.push);
+  if (session.data?.user) {
+    redirect("/dashboard");
+  } else {
+    redirect("/signin");
   }
 
-  return (
-    <main>
-      <Navbar />
-        
-      <h1>Home Page</h1>
-      {session?.user?.email && (
-        <>
-          <h1>{session.user.email}</h1>
-          <h1>{session.user.uid}</h1>
-          <h1>{session.user.account.acc_id}</h1>
-          <h1>{session.user.account.type}</h1>
-          <h1>{session.user.jwtToken}</h1>
-          <h1>{status}</h1>
-        </>
-      )}
-    </main>
-  );
+  return <main>landingPage</main>;
 }

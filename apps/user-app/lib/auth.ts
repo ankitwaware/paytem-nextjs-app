@@ -35,6 +35,8 @@ export const NEXT_AUTH_CONFIG = {
       },
       async authorize(credentials): Promise<any> {
         try {
+          console.log("auth.js ", credentials);
+
           // find user in Databse
           const userdb = await client.user.findFirst({
             where: {
@@ -62,23 +64,12 @@ export const NEXT_AUTH_CONFIG = {
             });
 
             // TODO Add Session in DB
-            const userAccount = await client.account.findFirst({
-              where: {
-                userId: userdb?.id,
-                type: "basicUser",
-              },
-              select: {
-                type: true,
-                acc_id: true,
-              },
-            });
 
             return {
               uid: userdb.id,
               name: userdb.name,
               email: userdb.email,
-              jwtToken: jwt,
-              account: { type: userAccount?.type, acc_id: userAccount?.acc_id },
+              jwtToken: jwt
             };
           }
 
@@ -108,7 +99,6 @@ export const NEXT_AUTH_CONFIG = {
       if (user) {
         newToken.uid = user.uid;
         newToken.jwtToken = user.jwtToken;
-        newToken.account = user.account;
       }
       console.log("new JWT to user", newToken);
       return newToken;
@@ -116,10 +106,9 @@ export const NEXT_AUTH_CONFIG = {
     session: ({ session, token, user }) => {
       const newSession = session as session;
       // console.log("session callback params", session, token, user);
-      if (newSession.user && token.uid && token.account) {
+      if (newSession.user && token.uid) {
         newSession.user.uid = token.uid as token["uid"];
         newSession.user.jwtToken = token.jwtToken as token["jwtToken"];
-        newSession.user.account = token.account as token["account"];
       }
       // TODO ADD USER SESSION IN DB
       console.log("new session to user", session);

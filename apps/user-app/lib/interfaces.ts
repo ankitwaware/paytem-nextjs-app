@@ -6,10 +6,6 @@ export interface session extends Session {
     /** The user's postal address. */
     uid: string;
     jwtToken: string;
-    account: {
-      acc_id: string;
-      type: string;
-    };
     /**
      * By default, TypeScript merges new interface properties and overwrites existing ones.
      * In this case, the default session user properties will be overwritten,
@@ -22,8 +18,4 @@ export interface session extends Session {
 export interface token extends JWT {
   uid: string;
   jwtToken: string;
-  account: {
-    acc_id: string;
-    type: string;
-  };
 }

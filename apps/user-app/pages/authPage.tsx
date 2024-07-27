@@ -11,7 +11,7 @@ export default async function AuthPage({ pageType }: authPageProp) {
   // TODO add redirect to home page after user session
   const session = await getServerSession();
 
-  if (session?.user?.email) redirect("/");
+  if (session?.user?.email) redirect("/dashboard");
 
   return (
     <section className="grid h-screen place-items-center bg-white">

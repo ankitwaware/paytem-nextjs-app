@@ -6,11 +6,10 @@ import {
   SIgnupFormSchema,
 } from "../lib/zodSchema/authFormSchema";
 import FormInput from "./formInput";
-import AuthBtn from "./signInUpBtn";
 import { signUpResBody } from "../app/api/register/route";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import FormBtn from "./formBtn";
+import FormBtn from "../lib/formBtn";
 
 export default function SignUpForm() {
   const {
@@ -24,6 +23,7 @@ export default function SignUpForm() {
       username: "",
       email: "",
       password: "",
+      number:""
     },
     progressive: true,
   });
@@ -75,6 +75,11 @@ export default function SignUpForm() {
         message: Responsebody.username.message,
       });
     }
+    if (Responsebody.number) {
+      setError("number", {
+        message: Responsebody.number.message,
+      });
+    }
     if (Responsebody.email) {
       setError("email", {
         message: Responsebody.email.message,
@@ -94,7 +99,6 @@ export default function SignUpForm() {
       action={"/api/register"}
       control={control}
       method="post"
-      // onSubmit={onSubmitHandler} // function to be called before the request
       onSuccess={onSuccessHandler} // valid response
       onError={onErrorHandler} // error response
       headers={{ "Content-Type": "application/json" }}
@@ -103,9 +107,14 @@ export default function SignUpForm() {
     >
       <FormInput
         formRegister={register("username")}
-        type="text"
         placeholder="Username"
         errorMsg={errors.username?.message}
+      />
+
+      <FormInput
+        formRegister={register("number")}
+        placeholder="Phone Number"
+        errorMsg={errors.number?.message}
       />
 
       <FormInput
@@ -123,20 +132,21 @@ export default function SignUpForm() {
       />
 
       {/* server error message */}
-      {errors?.root?.serverError && <p className="text-sm">{errors?.root?.serverError?.message}</p>}
+      {errors?.root?.serverError && (
+        <p className="text-sm">{errors?.root?.serverError?.message}</p>
+      )}
 
       <FormBtn
         type="submit"
         btnText="SIgnUp"
         isSubmitting={isSubmitting}
-        className="text-white"
+        className="bg-blue-600 text-white"
       />
 
       <FormBtn
         type="button"
         btnText="SIgnIn"
-        whiteBtn={true}
-        className="text-white"
+        className="text-blue-600"
         onClick={() => router.push("/signin")}
       />
 

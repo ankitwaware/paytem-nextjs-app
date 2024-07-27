@@ -6,24 +6,33 @@ const prisma = new PrismaClient();
 async function main() {
   const hashedPassword = await hash("123456", 10);
 
-  const testUsers = await prisma.user.createMany({
-    data: [
-      {
-        name: "test",
-        email: "test@email.com",
-        password: hashedPassword,
-        phoneNumber: "123456789",
-      },
-      {
-        name: "ankit",
-        email: "ankit@email.com",
-        password: hashedPassword,
-        phoneNumber: "8668732956",
-      },
-    ],
+  const testUser1 = await prisma.user.upsert({
+    where: {
+      email: "test@email.com",
+    },
+    update: {},
+    create: {
+      name: "test",
+      email: "test@email.com",
+      password: hashedPassword,
+      phoneNumber: "123456789",
+    },
   });
 
-  console.log(testUsers);
+  const testUser2 = await prisma.user.upsert({
+    where: {
+      email: "ankit@email.com",
+    },
+    update: {},
+    create: {
+      name: "ankit",
+      email: "ankit@email.com",
+      password: hashedPassword,
+      phoneNumber: "8668732956",
+    },
+  });
+
+  console.log(testUser1, testUser2);
 }
 
 main()

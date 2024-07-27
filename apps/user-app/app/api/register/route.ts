@@ -9,6 +9,7 @@ export type signUpResBody = {
   message: string;
   username?: { name: "username"; message: string };
   email?: { name: "email"; message: string };
+  number?: { name: "number"; message: string };
   password?: { name: "password"; message: string };
   data?: {
     email: string;
@@ -18,13 +19,15 @@ export type signUpResBody = {
 
 export async function POST(request: Request) {
   try {
-    const { username, email, password } = await request.json();
+    const { username, email, password, number } = await request.json();
 
     console.log(
       "SIgn Up Data at /api/register POST",
       username,
       email,
       password,
+      number,
+      typeof number,
     );
 
     //VALIDATION FOR SIGNUP ON SERVER
@@ -32,6 +35,7 @@ export async function POST(request: Request) {
       username,
       email,
       password,
+      number,
     });
 
     // input error
@@ -43,6 +47,7 @@ export async function POST(request: Request) {
       if (formatted.username) messageString + "/username";
       if (formatted.email) messageString + "/email";
       if (formatted.password) messageString + "/password";
+      if (formatted.number) messageString + "/number";
 
       return NextResponse.json<signUpResBody>(
         {
@@ -59,6 +64,10 @@ export async function POST(request: Request) {
             name: "password",
             message: formatted.password?._errors[0]!,
           },
+          number: {
+            name: "number",
+            message: formatted.number?._errors[0]!,
+          },
         },
         { status: 403 },
       );
@@ -68,16 +77,22 @@ export async function POST(request: Request) {
     const existingUser = await client.user.findFirst({
       where: {
         email: email,
+        phoneNumber: number,
       },
       select: {
         id: true,
+        email: true,
+        phoneNumber: true,
       },
     });
+
+    console.log(existingUser);
 
     if (existingUser) {
       return NextResponse.json<signUpResBody>(
         {
-          message: "Email Already Used. Enter different email",
+          message:
+            "Email and Number Already Used. Enter different email and number",
         },
         {
           status: 401,
@@ -89,18 +104,12 @@ export async function POST(request: Request) {
     const hashedPassword = await hash(password, 10);
 
     // creating new user in db
-    const newUser = await client.user.create({
+    await client.user.create({
       data: {
         name: username,
         email: email,
         password: hashedPassword,
-      },
-    });
-
-    await client.account.create({
-      data: {
-        userId: newUser.id,
-        type: "basicUser",
+        phoneNumber: number,
       },
     });
 
@@ -111,7 +120,8 @@ export async function POST(request: Request) {
       },
       { status: 201 },
     );
-  } catch (error) {
+  } catch (error:any) {
+    console.log(error.message);
     return NextResponse.json<signUpResBody>(
       { message: "Something Went Wrong.Try Again" },
       { status: 500 },
