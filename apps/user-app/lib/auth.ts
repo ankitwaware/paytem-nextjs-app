@@ -83,9 +83,9 @@ export const NEXT_AUTH_CONFIG = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret3",
   callbacks: {
-    async signIn(params) {
+    async signIn() {
       // const { account, profile } = params;
-      console.log("sign in callback", params);
+      // console.log("sign in callback", params);
       // if (account!.provider === "google") {
       //   return (
       //     profile?.email_verified && profile.email.endsWith("@example.com")
@@ -100,10 +100,10 @@ export const NEXT_AUTH_CONFIG = {
         newToken.uid = user.uid;
         newToken.jwtToken = user.jwtToken;
       }
-      console.log("new JWT to user", newToken);
+      // console.log("new JWT to user", newToken);
       return newToken;
     },
-    session: ({ session, token, user }) => {
+    session: ({ session, token }) => {
       const newSession = session as session;
       // console.log("session callback params", session, token, user);
       if (newSession.user && token.uid) {

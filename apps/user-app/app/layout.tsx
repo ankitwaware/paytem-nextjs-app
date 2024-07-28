@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${roboto.className} tracking-wide bg-black`}>
+        <body className={`${roboto.className} tracking-wide `}>
           <Appbar />
           {children}
         </body>

@@ -113,14 +113,18 @@ export async function POST(request: Request) {
       },
     });
 
+    // TODO add signin request here
     return NextResponse.json<signUpResBody>(
       {
         message: "Registration Success",
-        data: { email: email, password: password },
+        data: {
+          email,
+          password,
+        },
       },
       { status: 201 },
     );
-  } catch (error:any) {
+  } catch (error: any) {
     console.log(error.message);
     return NextResponse.json<signUpResBody>(
       { message: "Something Went Wrong.Try Again" },

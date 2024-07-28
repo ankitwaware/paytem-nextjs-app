@@ -3,7 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex bg-yellow-400">
+    <div className="flex bg-slate-200">
       <Sidebar />
       {children}
     </div>

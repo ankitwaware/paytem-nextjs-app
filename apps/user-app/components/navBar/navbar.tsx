@@ -11,7 +11,7 @@ interface NavbarProp {
 
 export default function Navbar({ user, signin, signout }: NavbarProp) {
   return (
-    <nav className="md-px-8 flex justify-between border-b border-black bg-gray-200 px-4 py-3">
+    <nav className="md-px-8 flex justify-between border-b-2 border-slate-400 bg-slate-200 px-4 py-3">
       <PaytemHeading />
 
       <div className="flex justify-between gap-x-4 capitalize">

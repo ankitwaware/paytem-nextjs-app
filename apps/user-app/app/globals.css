@@ -6,4 +6,8 @@
   input {
     outline: none;
   }
+  optgroup {
+    outline: none;
+    border: none;
+  }
 }

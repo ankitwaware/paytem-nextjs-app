@@ -23,7 +23,7 @@ export default function SignUpForm() {
       username: "",
       email: "",
       password: "",
-      number:""
+      number: "",
     },
     progressive: true,
   });
@@ -36,6 +36,7 @@ export default function SignUpForm() {
     try {
       const Responsebody: signUpResBody = await signUpResponse.json();
 
+      // after successfull signup, signin user
       const res = await signIn("credentials", {
         email: Responsebody.data?.email,
         password: Responsebody.data?.password,
