@@ -3,6 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 
+// #2 added landing page -@ankitwaware
 export default function Page(): JSX.Element {
   const { data: session, status } = useSession();
   const router = useRouter();
