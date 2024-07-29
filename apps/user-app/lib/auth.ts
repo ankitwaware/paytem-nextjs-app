@@ -9,7 +9,7 @@ import { JWT } from "next-auth/jwt";
 
 const client = new PrismaClient();
 
-export const NEXT_AUTH_CONFIG = {
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -119,3 +119,5 @@ export const NEXT_AUTH_CONFIG = {
     signIn: "/signin",
   },
 } satisfies NextAuthOptions;
+
+export default authOptions ;
