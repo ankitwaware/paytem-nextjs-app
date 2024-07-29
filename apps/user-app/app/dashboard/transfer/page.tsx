@@ -1,16 +1,63 @@
+import { getServerSession } from "next-auth";
 import AddMoney from "../../../components/AddMoney";
 import Balance from "../../../components/Balance";
 import OnRampTransaction from "../../../components/OnRampTransaction";
+import authOptions from "../../../lib/auth";
+import { PrismaClient } from "@repo/database/client";
 
-export default function Page() {
+const client = new PrismaClient();
+
+async function getBalance() {
+  const session = await getServerSession(authOptions);
+  const userId = Number(session?.user.uid);
+
+  const userBalances = await client.balance.findUnique({
+    where: {
+      userId: userId,
+    },
+    select: {
+      amount: true,
+      locked: true,
+    },
+  });
+
+  return userBalances;
+}
+
+export async function getOnRampTransactions() {
+  const session = await getServerSession(authOptions);
+  const userId = Number(session?.user.uid);
+
+  const userTransactions = await client.onRampTransaction.findMany({
+    where: {
+      userId: userId,
+    },
+    select: {
+      id: true,
+      status: true,
+      amount: true,
+      provider: true,
+      startTime: true,
+    },
+  });
+
+  return userTransactions;
+}
+
+export default async function Page() {
+  const balances = await getBalance();
+  const userTransactions = await getOnRampTransactions();
+
   return (
-    <div className="h-80 w-full border-2 px-6 pt-4">
+    <div className="w-full border-2 px-6 pt-4">
       <h1 className="mb-2 text-3xl font-bold text-blue-600">Transfer</h1>
 
-      <div className="grid size-full grid-cols-1 grid-rows-3 gap-4 md:grid-flow-col md:grid-cols-2">
-        <AddMoney className="col-span-1 row-span-1 md:row-span-3" />
-        <Balance className="" />
-        <OnRampTransaction className="bg-white md:row-span-2" />
+      <div className="flex gap-x-4">
+        <AddMoney className="flex-1 h-72 justify-between" />
+        <div className="flex flex-1 flex-col gap-y-4">
+          <Balance balances={balances} className="h-44" />
+          <OnRampTransaction OnRampTransactions={userTransactions} />
+        </div>
       </div>
     </div>
   );

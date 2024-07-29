@@ -19,7 +19,7 @@ model User {
   email             String?             @unique
   password          String
   phoneNumber       String              @unique
-  balance           Balance[]
+  balance           Balance?
   onRampTransaction OnRampTransaction[]
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
@@ -32,11 +32,13 @@ model Merchant {
   auth_type authType
 }
 
+
+// to balance 100 = 1 Rs or 100 Paise  decimal places stores
 model Balance {
   id     Int  @id @default(autoincrement())
   userId Int  @unique
-  amount Int
-  locked Int
+  amount Int  @default(000)
+  locked Int  @default(000)
   User   User @relation(fields: [userId], references: [id])
 }
 
