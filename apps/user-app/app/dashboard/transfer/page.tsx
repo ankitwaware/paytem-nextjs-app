@@ -44,9 +44,12 @@ export async function getOnRampTransactions() {
   return userTransactions;
 }
 
+// user transfer page
 export default async function Page() {
   const balances = await getBalance();
   const userTransactions = await getOnRampTransactions();
+
+
 
   return (
     <div className="w-full border-2 px-6 pt-4">
