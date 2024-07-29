@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Card from "./reusable/Card";
 
 // https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions
 
@@ -35,11 +36,7 @@ export default function AddMoney({ className }: { className?: string }) {
   }
 
   return (
-    <div
-      className={`flex flex-col justify-between rounded-lg bg-slate-50 p-4 font-medium ${className}`}
-    >
-      <h3 className="text-xl">Add Money</h3>
-
+    <Card title="Add Moeny" className={`${className}`}>
       <div className="flex flex-col gap-y-2">
         <label htmlFor="amount">Amount</label>
         <input
@@ -72,11 +69,11 @@ export default function AddMoney({ className }: { className?: string }) {
       </div>
 
       <button
-        className="self-center rounded-md bg-slate-700 p-2 px-3 text-white"
+        className="self-center rounded-md bg-gray-950 p-2 px-3 text-white"
         onClick={onAddMoneyHandler}
       >
         Add Money
       </button>
-    </div>
+    </Card>
   );
 }
