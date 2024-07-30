@@ -1,9 +1,10 @@
 "use client";
-
-import { useState } from "react";
 import Card from "./reusable/Card";
 
-// https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions
+import { addMoneySchema, addMoneyInput } from "../lib/zodSchema/addMoney";
+import { Form, useForm, FormSubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createOnrampTransaction } from "../lib/actions/createOnrampTransaction";
 
 const supported_banks = [
   { name: "Hdfc Bank", redirectUrl: "https://netbanking.hdfcbank.com" },
@@ -12,68 +13,107 @@ const supported_banks = [
 ];
 
 export default function AddMoney({ className }: { className?: string }) {
-  const [defaultBank, setDefaultBank] = useState(supported_banks[0]?.name);
-  const [defaultRedirectURl, setRedirectURl] = useState(
-    supported_banks[0]?.redirectUrl,
-  );
-  const [amount, setAmount] = useState("");
+  const {
+    control,
+    register,
 
-  function onSelectHandler(e) {
-    const selectedBank = e.target.value;
-    setDefaultBank(selectedBank);
+    formState: { errors, isSubmitting },
+  } = useForm<addMoneyInput>({
+    resolver: zodResolver(addMoneySchema),
+    defaultValues: {
+      money: 0,
+      bank: supported_banks[0]?.name,
+    },
+    progressive: true,
+  });
 
-    // redirect url
-    setRedirectURl(
-      supported_banks.find((bank) => bank.name === selectedBank)?.redirectUrl ||
-        "",
-    );
-  }
+  const onAddMoneyHandler: FormSubmitHandler<addMoneyInput> = async (
+    payload,
+  ) => {
+    const { data } = payload;
 
-  function onAddMoneyHandler(e) {
-    console.log("add money", amount);
-    console.log("bank", defaultBank);
-    console.log("bank url", defaultRedirectURl);
-  }
+    console.log(data);
+    console.log(payload);
+
+    const { bank, money } = data;
+    // redirect url of selected Bank
+    // const redirectUrl = supported_banks.find(
+    //   (supp_bank) => supp_bank.name === bank,
+    // )?.redirectUrl;
+
+    try {
+      const NewTxn = await createOnrampTransaction(bank, money);
+
+      // window.location.href = redirectUrl || "";
+
+      // fake bank api to handle add Money
+      const response = await fetch("http://localhost:8080/hdfcWebhook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: NewTxn.txn?.token,
+          userId: NewTxn.txn?.userId?.toString(),
+          amount: NewTxn.txn?.amount?.toString(),
+        }),
+      });
+      
+      if (!response.ok) {
+        return response;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <Card title="Add Moeny" className={`${className}`}>
-      <div className="flex flex-col gap-y-2">
-        <label htmlFor="amount">Amount</label>
-        <input
-          id="amount"
-          type="text"
-          placeholder="Amount"
-          autoComplete="off"
-          className="rounded-md border border-slate-300 p-2"
-          onChange={(e) => setAmount(e.target.value)}
-          value={amount}
-        />
-      </div>
+    <Form
+      control={control}
+      method="post"
+      onSubmit={onAddMoneyHandler}
+      headers={{ "Content-Type": "application/json" }}
+      className={`${className}`}
+    >
+      <Card title="Add Moeny" className="h-72 justify-between">
+        <div className="flex flex-col gap-y-2">
+          <label htmlFor="amount">Amount</label>
+          <input
+            id="amount"
+            {...register("money")}
+            type="text"
+            placeholder="Amount"
+            autoComplete="off"
+            className="rounded-md border border-slate-300 p-2"
+          />
+          {<p className="text-sm">{errors.money?.message}</p>}
+        </div>
 
-      <div className="flex flex-col gap-y-2">
-        <label htmlFor="bank">Bank</label>
-        <select
-          id="bank"
-          className="rounded-md border border-slate-300 p-2 capitalize"
-          defaultValue={defaultBank}
-          onChange={onSelectHandler}
+        <div className="flex flex-col gap-y-2">
+          <label htmlFor="bank">Bank</label>
+          <select
+            id="bank"
+            {...register("bank")}
+            className="rounded-md border border-slate-300 p-2 capitalize"
+          >
+            {supported_banks.map((bank, index) => {
+              return (
+                <option defaultValue={bank.name} key={index}>
+                  {bank.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className="self-center rounded-md bg-gray-950 p-2 px-3 text-white"
+          disabled={isSubmitting}
         >
-          {supported_banks.map((bank, index) => {
-            return (
-              <option defaultValue={bank.name} key={index}>
-                {bank.name}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-
-      <button
-        className="self-center rounded-md bg-gray-950 p-2 px-3 text-white"
-        onClick={onAddMoneyHandler}
-      >
-        Add Money
-      </button>
-    </Card>
+          {isSubmitting ? "Adding..." : "Add Money"}
+        </button>
+      </Card>
+    </Form>
   );
 }

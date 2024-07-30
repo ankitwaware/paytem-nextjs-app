@@ -1,33 +1,29 @@
 import Card from "./reusable/Card";
 
-enum Status {
-  Success,
-  failure,
-  Processing,
-}
+import { onRampStatus } from "@repo/database/client";
 
-type TransactionProp = {
+interface Transaction {
   id: number;
-  status: Status;
+  status: onRampStatus;
   amount: number;
   provider: string;
   startTime: Date;
 };
 
-interface OnRampTransactionProp extends TransactionProp {
+interface OnRampTransactionProp {
   className?: string;
-  OnRampTransactions: TransactionProp[] | null;
+  transactions: Transaction[] | null;
 };
 
 export default function OnRampTransaction({
   className,
-  OnRampTransactions,
+  transactions,
 }: OnRampTransactionProp) {
   return (
     <Card title="Recent Transactions" className={`${className}`}>
-      {OnRampTransactions!.map((transaction, index) => {
+      {transactions!.map((transaction, index) => {
         return (
-          <Transaction
+          <TransactionItem
             key={index}
             id={transaction.id}
             status={transaction.status}
@@ -41,13 +37,13 @@ export default function OnRampTransaction({
   );
 }
 
-function Transaction({
+function TransactionItem({
   id,
   status,
   startTime,
   amount,
   provider,
-}: TransactionProp) {
+}: Transaction) {
   console.log("txn id", id);
 
   return (

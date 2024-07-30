@@ -32,25 +32,24 @@ model Merchant {
   auth_type authType
 }
 
-
 // to balance 100 = 1 Rs or 100 Paise  decimal places stores
 model Balance {
   id     Int  @id @default(autoincrement())
   userId Int  @unique
   amount Int  @default(000)
   locked Int  @default(000)
-  User   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model OnRampTransaction {
   id        Int          @id @default(autoincrement())
-  status    onRampStatus
+  status    onRampStatus @default(Processing)
   token     String       @unique
   amount    Int
   provider  String
   startTime DateTime     @default(now())
   userId    Int
-  User      User         @relation(fields: [userId], references: [id])
+  user      User         @relation(fields: [userId], references: [id])
 }
 
 enum authType {

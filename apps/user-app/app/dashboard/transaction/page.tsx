@@ -4,5 +4,5 @@ import { getOnRampTransactions } from "../transfer/page";
 export default async function Page() {
   const userTransactions = await getOnRampTransactions();
 
-  return <OnRampTransaction OnRampTransactions={userTransactions} className="w-full m-8" />;
+  return <OnRampTransaction transactions={userTransactions} className="w-full m-8" />;
 }

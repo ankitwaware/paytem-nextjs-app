@@ -8,22 +8,18 @@ interface BalanceProp {
   } | null;
 }
 
-export default function Balance({
-  className,
-  balances: { amount, locked},
-}: BalanceProp) {
-  const totalBalance = amount! + locked!;
+export default function Balance({ className, balances }: BalanceProp) {
+  const totalBalance = balances?.amount! + balances?.locked!;
 
   return (
     <Card title="Balance" className={`${className}`}>
-      <BalanceItem title="Unlocked balnce" balance={amount} />
-      <BalanceItem title="locked balnce" balance={locked} />
-      <BalanceItem title="Total balnce" balance={totalBalance} />
+      <BalanceItem title="Unlocked" balance={balances?.amount!} />
+      <BalanceItem title="locked" balance={balances?.locked!} />
+      <BalanceItem title="Total" balance={totalBalance} />
     </Card>
   );
 }
 
-// todo -@ankitwaware  add title/balance type interface
 function BalanceItem({
   balance,
   className,
@@ -31,13 +27,13 @@ function BalanceItem({
 }: {
   balance: number | 0;
   className?: string;
-  title: string;
+  title: "Unlocked" | "locked" | "Total";
 }) {
   return (
     <div
       className={`flex items-center justify-between border-b border-slate-600 py-1.5 ${className}`}
     >
-      <h4>{title}</h4>
+      <h4>{`${title} balance`}</h4>
       <span>{balance / 100} INR</span>
     </div>
   );
