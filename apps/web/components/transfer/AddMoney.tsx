@@ -5,6 +5,8 @@ import { addMoneySchema, addMoneyInput } from "../../schema/addMoneySchema";
 import { Form, useForm, FormSubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
+import { useEffect } from "react";
+import { useBalance } from "@repo/store/useBalance";
 
 const supported_banks = [
   { name: "Hdfc Bank", redirectUrl: "https://netbanking.hdfcbank.com" },
@@ -12,7 +14,16 @@ const supported_banks = [
   { name: "Kotak Bank", redirectUrl: "https://www.kotakbank.com/" },
 ];
 
-export default function AddMoney({ className }: { className?: string }) {
+export default function AddMoney({
+  className,
+  balances,
+}: {
+  className?: string;
+  balances: {
+    amount: number;
+    locked: number;
+  } | null;
+}) {
   const {
     control,
     register,
@@ -24,6 +35,15 @@ export default function AddMoney({ className }: { className?: string }) {
     },
     progressive: true,
   });
+
+  const { setlockedBalance, setunlockedBalance } = useBalance();
+
+  useEffect(() => {
+    if (balances?.amount) {
+      setlockedBalance(balances.locked);
+      setunlockedBalance(balances.amount);
+    }
+  }, [balances]);
 
   const onAddMoneyHandler: FormSubmitHandler<addMoneyInput> = async (
     payload,
@@ -104,7 +124,7 @@ export default function AddMoney({ className }: { className?: string }) {
           className="self-center rounded-md bg-gray-950 p-2 px-3 text-white"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Adding..." : "Add amount"}
+          {isSubmitting ? "Adding..." : "Add Money"}
         </button>
       </Card>
     </Form>

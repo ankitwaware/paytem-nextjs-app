@@ -8,6 +8,7 @@ export default async function OnRampTransaction({
   className?: string;
 }) {
   const transactions = await getOnRampTransactions();
+  
   return (
     <Card title="Recent Transactions" className={`${className}`}>
       {transactions!.map((transaction, index) => {
