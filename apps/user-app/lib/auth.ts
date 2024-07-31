@@ -1,13 +1,11 @@
 import { NextAuthOptions } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
-import { PrismaClient } from "@repo/database/client";
-import { genrateJWT } from "./genrateJWT";
-import { session, token } from "./interfaces";
+import prisma from "@repo/database";
+import { genrateJWT } from "./functions/genrateJWT";
+import { session, token } from "../types/interfaces";
 import GoogleProvider from "next-auth/providers/google";
 import { JWT } from "next-auth/jwt";
-
-const client = new PrismaClient();
 
 const authOptions = {
   providers: [
@@ -33,12 +31,13 @@ const authOptions = {
         },
         password: { label: "password", type: "password" },
       },
+      //  todo add credentials type
       async authorize(credentials): Promise<any> {
         try {
           console.log("auth.js ", credentials);
 
           // find user in Databse
-          const userdb = await client.user.findFirst({
+          const userdb = await prisma.user.findFirst({
             where: {
               email: credentials?.email,
             },
@@ -63,8 +62,6 @@ const authOptions = {
               id: userdb.id,
             });
 
-            // TODO Add Session in DB
-
             return {
               uid: userdb.id,
               name: userdb.name,
@@ -83,35 +80,20 @@ const authOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret3",
   callbacks: {
-    async signIn() {
-      // const { account, profile } = params;
-      // console.log("sign in callback", params);
-      // if (account!.provider === "google") {
-      //   return (
-      //     profile?.email_verified && profile.email.endsWith("@example.com")
-      //   );
-      // }
-      return true; // Do different verification for other providers that don't have `email_verified`
-    },
     jwt: async ({ token, user }: { token: JWT; user: any }) => {
       const newToken = token as token;
-      // console.log("JWT callback params", token, user);
       if (user) {
         newToken.uid = user.uid;
         newToken.jwtToken = user.jwtToken;
       }
-      // console.log("new JWT to user", newToken);
       return newToken;
     },
     session: ({ session, token }) => {
       const newSession = session as session;
-      // console.log("session callback params", session, token, user);
       if (newSession.user && token.uid) {
         newSession.user.uid = token.uid as token["uid"];
         newSession.user.jwtToken = token.jwtToken as token["jwtToken"];
       }
-      // TODO ADD USER SESSION IN DB
-      console.log("new session to user", session);
       return newSession;
     },
   },
@@ -120,4 +102,4 @@ const authOptions = {
   },
 } satisfies NextAuthOptions;
 
-export default authOptions ;
+export default authOptions;

@@ -2,9 +2,8 @@
 
 import { getServerSession } from "next-auth";
 import authOptions from "../auth";
-import { PrismaClient } from "@repo/database/client";
+import prisma from "@repo/database";
 
-const client = new PrismaClient();
 export async function createOnrampTransaction(
   provider: string,
   amount: number,
@@ -20,7 +19,7 @@ export async function createOnrampTransaction(
 
   const token = (Math.random() * 1000).toString();
 
-  const txn = await client.onRampTransaction.create({
+  const txn = await prisma.onRampTransaction.create({
     data: {
       status: "Processing",
       token: token,

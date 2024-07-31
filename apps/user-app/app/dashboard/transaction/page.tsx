@@ -1,8 +1,5 @@
-import OnRampTransaction from "../../../components/OnRampTransaction";
-import { getOnRampTransactions } from "../transfer/page";
+import TransactionPage from "../../../pages/TransactionPage";
 
-export default async function Page() {
-  const userTransactions = await getOnRampTransactions();
-
-  return <OnRampTransaction transactions={userTransactions} className="w-full m-8" />;
+export default function Page() {
+  return <TransactionPage />;
 }

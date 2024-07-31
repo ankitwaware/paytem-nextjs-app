@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
-import { PrismaClient } from "@repo/database/client";
-import { SIgnupFormSchema } from "../../../lib/zodSchema/authFormSchema";
-
-const client = new PrismaClient();
+import prisma from "@repo/database";
+import { SIgnupFormSchema } from "../../../schema/authFormSchema";
 
 export type signUpResBody = {
   message: string;
@@ -74,7 +72,7 @@ export async function POST(request: Request) {
     }
 
     // email in databse
-    const existingUser = await client.user.findFirst({
+    const existingUser = await prisma.user.findFirst({
       where: {
         email: email,
         phoneNumber: number,
@@ -104,7 +102,7 @@ export async function POST(request: Request) {
     const hashedPassword = await hash(password, 10);
 
     // creating new user in db
-    await client.user.create({
+    await prisma.user.create({
       data: {
         name: username,
         email: email,

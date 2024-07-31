@@ -3,8 +3,6 @@ import { hash } from "bcrypt";
 
 const prisma = new PrismaClient();
 
-// add balances
-
 async function main() {
   const hashedPassword = await hash("123456", 10);
 

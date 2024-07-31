@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient } from "@repo/database/client";
+import prisma from "@repo/database";
 import * as z from "zod";
 import cors from "cors";
 
@@ -16,7 +16,10 @@ const paymentInfoSchema = z.object({
 });
 
 type paymentInfoType = z.infer<typeof paymentInfoSchema>;
-const client = new PrismaClient();
+<<<<<<< Updated upstream
+const prisma = new PrismaClient();
+=======
+>>>>>>> Stashed changes
 
 app.get("/hey", (req, res) => {
   return res.json({
@@ -35,8 +38,8 @@ app.post("/hdfcwebhook", async (req, res) => {
   }
 
   try {
-    await client.$transaction([
-      client.balance.update({
+    await prisma.$transaction([
+      prisma.balance.update({
         where: {
           userId: Number(result.data.userId),
         },
@@ -46,7 +49,7 @@ app.post("/hdfcwebhook", async (req, res) => {
           },
         },
       }),
-      client.onRampTransaction.update({
+      prisma.onRampTransaction.update({
         where: {
           token: result.data.token,
         },

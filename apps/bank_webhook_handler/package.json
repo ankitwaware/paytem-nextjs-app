@@ -1,22 +1,20 @@
 {
   "name": "bank_webhook_handler",
   "version": "1.0.0",
-  "description": "",
-  "main": "",
+  "private": true,
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "start": "node dist/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@repo/database": "*",
-    "@types/express": "^4.17.21",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "zod": "^3.23.8"
+    "express": "^4.19.2"
   },
   "devDependencies": {
+    "zod": "^3.23.8",
+    "@repo/database": "*",
+    "@repo/typescript-config": "*",
+    "@types/express": "^4.17.21",
     "@types/cors": "^2.8.17"
   }
 }

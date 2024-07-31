@@ -1,10 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
+import authOptions from "../../../lib/auth";
 
 export async function GET() {
-  return Response.json({ name: "ankit", id: 1234 });
-}
+  const session = await getServerSession(authOptions);
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  return NextResponse.json({ name: body.name });
+  if (session?.user) {
+    return NextResponse.json({
+      ...session.user,
+    });
+  } else {
+    return (
+      NextResponse.json({
+        message: "You are not logged in!",
+      }),
+      {
+        status: 403,
+      }
+    );
+  }
 }
