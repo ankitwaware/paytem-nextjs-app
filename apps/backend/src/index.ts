@@ -1,12 +1,13 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import prisma from "@repo/database";
 import * as z from "zod";
 import cors from "cors";
 
+const PORT = 8080 || 8082;
 const app = express();
 
-// middleware that only parses json and only looks at requests where the Content-Type header matches the type option.
 app.use(cors());
+// middleware that only parses json and only looks at requests where the Content-Type header matches the type option.
 app.use(express.json());
 
 const paymentInfoSchema = z.object({
@@ -16,21 +17,10 @@ const paymentInfoSchema = z.object({
 });
 
 type paymentInfoType = z.infer<typeof paymentInfoSchema>;
-<<<<<<< Updated upstream
-const prisma = new PrismaClient();
-=======
->>>>>>> Stashed changes
 
-app.get("/hey", (req, res) => {
-  return res.json({
-    msg: "all good at server",
-  });
-});
-
-// #10 added dummy bank_webhook_backend 
-app.post("/hdfcwebhook", async (req, res) => {
+const bankPOSTHandler = async (req: Request, res: Response) => {
   const reqBody: paymentInfoType = req.body;
-  console.log("req body", reqBody);
+  console.log(reqBody);
   const result = paymentInfoSchema.safeParse(reqBody);
 
   if (!result.success) {
@@ -45,13 +35,14 @@ app.post("/hdfcwebhook", async (req, res) => {
         },
         data: {
           amount: {
-            increment: Number(result.data.amount),
+            increment: Number(result.data.amount) * 100,
           },
         },
       }),
       prisma.onRampTransaction.update({
         where: {
           token: result.data.token,
+          userId: Number(result.data.userId),
         },
         data: {
           status: "Success",
@@ -64,12 +55,31 @@ app.post("/hdfcwebhook", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(411).json({
+    return res.status(411).json({
       message: "Error while processing webhook",
     });
   }
-});
+};
 
-app.listen(8080, () => {
-  console.log("bank webhook running...8080");
+// #10 added dummy bank_webhook_backend
+app.post("/hdfcwebhook", bankPOSTHandler);
+app.post("/axiswebhook", bankPOSTHandler);
+app.post("/kotakwebhook", bankPOSTHandler);
+
+const errorHandler = (
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  console.log(err.message);
+  return res.status(500).json({
+    message: "I dont have that",
+  });
+};
+
+app.use("/*", errorHandler);
+
+app.listen(PORT, () => {
+  console.log(`bank webhook running on port:${PORT}...`);
 });

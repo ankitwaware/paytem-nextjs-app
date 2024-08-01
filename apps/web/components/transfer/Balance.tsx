@@ -1,22 +1,18 @@
-"use client";
-
-import Card from "@repo/ui/Card";
+import Card from "@repo/ui/card";
 import BalanceItem from "../../../../packages/ui/src/BalanceItem";
-import { useBalance } from "@repo/store/useBalance";
+import getBalance from "../../lib/functions/getBalance";
 
-export default function Balance({
-  className,
-}: {
-  className?: string;
-  
-}) {
-  const { unlocked, locked, total } = useBalance();
+export default async function Balance({ className }: { className?: string }) {
+  const userBalancres = await getBalance();
 
   return (
     <Card title="Balance" className={`${className}`}>
-      <BalanceItem title="Unlocked" balance={unlocked} />
-      <BalanceItem title="locked" balance={locked} />
-      <BalanceItem title="Total" balance={total} />
+      <BalanceItem title="Unlocked" balance={userBalancres?.amount} />
+      <BalanceItem title="locked" balance={userBalancres?.locked} />
+      <BalanceItem
+        title="Total"
+        balance={userBalancres?.amount! + userBalancres?.locked! || 0}
+      />
     </Card>
   );
 }

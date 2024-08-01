@@ -3,8 +3,8 @@ import NavBtn from "./navBtn";
 
 interface NavbarProp {
   user?: {
-    name: string | null;
-    email: string | null;
+    name?: string | null;
+    email?: string | null;
   };
   signin: () => void;
   signout: () => void;

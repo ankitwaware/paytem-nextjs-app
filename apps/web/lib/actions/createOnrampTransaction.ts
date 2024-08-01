@@ -7,6 +7,7 @@ import prisma from "@repo/database";
 export async function createOnrampTransaction(
   provider: string,
   amount: number,
+  token: string,
 ) {
   const session = await getServerSession(authOptions);
 
@@ -17,8 +18,6 @@ export async function createOnrampTransaction(
     };
   }
 
-  const token = (Math.random() * 1000).toString();
-
   const txn = await prisma.onRampTransaction.create({
     data: {
       status: "Processing",
@@ -27,6 +26,9 @@ export async function createOnrampTransaction(
       provider: provider,
       startTime: new Date(),
       userId: Number(session.user.uid),
+    },
+    select: {
+      userId: true,
     },
   });
 

@@ -10,13 +10,20 @@
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET"
   ],
- "tasks": {
+  "pipeline": {
     "build": {
       "dependsOn": [
         "^build"
       ],
-      "inputs": ["$TURBO_DEFAULT", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "inputs": [
+        "$TURBO_DEFAULT",
+        ".env*"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**"
+      ]
     },
     "lint": {
       "dependsOn": [
@@ -25,13 +32,12 @@
     },
     "dev": {
       "dependsOn": [
-        "db:generate",
         "^dev"
       ],
       "cache": false,
       "persistent": true
     },
-    "db:generate": {
+    "generate": {
       "cache": false
     },
     "db:migrate": {

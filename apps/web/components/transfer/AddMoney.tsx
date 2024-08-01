@@ -5,8 +5,6 @@ import { addMoneySchema, addMoneyInput } from "../../schema/addMoneySchema";
 import { Form, useForm, FormSubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
-import { useEffect } from "react";
-import { useBalance } from "@repo/store/useBalance";
 
 const supported_banks = [
   { name: "Hdfc Bank", redirectUrl: "https://netbanking.hdfcbank.com" },
@@ -14,16 +12,7 @@ const supported_banks = [
   { name: "Kotak Bank", redirectUrl: "https://www.kotakbank.com/" },
 ];
 
-export default function AddMoney({
-  className,
-  balances,
-}: {
-  className?: string;
-  balances: {
-    amount: number;
-    locked: number;
-  } | null;
-}) {
+export default function AddMoney({ className }: { className?: string }) {
   const {
     control,
     register,
@@ -36,19 +25,11 @@ export default function AddMoney({
     progressive: true,
   });
 
-  const { setlockedBalance, setunlockedBalance } = useBalance();
-
-  useEffect(() => {
-    if (balances?.amount) {
-      setlockedBalance(balances.locked);
-      setunlockedBalance(balances.amount);
-    }
-  }, [balances]);
-
   const onAddMoneyHandler: FormSubmitHandler<addMoneyInput> = async (
     payload,
   ) => {
     const { data } = payload;
+    console.log(data)
 
     const { bank, amount } = data;
     // redirect url of selected Bank
@@ -57,26 +38,34 @@ export default function AddMoney({
     // )?.redirectUrl;
 
     try {
-      const NewTxn = await createOnrampTransaction(bank, amount);
+      // transaction unique token
+      const token = (Math.random() * 1000 + 1).toString();
+
+      const NewTxn = await createOnrampTransaction(bank, amount, token);
 
       // window.location.href = redirectUrl || "";
 
       // fake bank api to handle add amount
-      const response = await fetch("http://localhost:8080/hdfcWebhook", {
+      const bankUrl = `http://localhost:8080/hdfcwebhook`;
+      console.log(bankUrl);
+      const response = await fetch(bankUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: NewTxn.txn?.token,
+          token: token,
           userId: NewTxn.txn?.userId?.toString(),
-          amount: NewTxn.txn?.amount?.toString(),
+          amount: amount.toString(),
         }),
       });
 
       if (!response.ok) {
         return response;
       }
+
+      // reload the page
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

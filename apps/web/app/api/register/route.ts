@@ -108,10 +108,15 @@ export async function POST(request: Request) {
         email: email,
         password: hashedPassword,
         phoneNumber: number,
+        balance: {
+          create: {
+            amount: 0,
+            locked: 0,
+          },
+        },
       },
     });
 
-    // TODO add signin request here
     return NextResponse.json<signUpResBody>(
       {
         message: "Registration Success",
