@@ -15,7 +15,7 @@ export const addMoneySchema = z.object({
       // inferred return type.
       return z.NEVER;
     }
-    return parsedNumber;
+    return stringMoney;
   }),
   bank: z.string(),
 });
