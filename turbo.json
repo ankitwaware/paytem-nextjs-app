@@ -13,10 +13,14 @@
   "pipeline": {
     "build": {
       "dependsOn": [
-        "db:generate",
         "^build"
       ],
+      "inputs": [
+        "$TURBO_DEFAULT",
+        ".env*"
+      ],
       "outputs": [
+        "dist/**",
         ".next/**",
         "!.next/cache/**"
       ]
@@ -28,13 +32,12 @@
     },
     "dev": {
       "dependsOn": [
-        "db:generate",
         "^dev"
       ],
       "cache": false,
       "persistent": true
     },
-    "db:generate": {
+    "generate": {
       "cache": false
     },
     "db:migrate": {

@@ -1,22 +1,33 @@
 {
   "name": "@repo/database",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
-    "db:migrate": "npx prisma migrate dev",
-    "db:generate": "npx prisma generate",
-    "db:push": "npx prisma db push --skip-generate",
-    "db:seed": "npx ts-node ./prisma/seed.ts",
-    "db:test": "npx ts-node ./src/test",
-    "db:studio": "npx prisma studio"
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "tsx src/seed.ts",
+    "dev": "tsup src/* --watch",
+    "format": "prisma format",
+    "generate": "prisma generate",
+    "lint": "eslint . --max-warnings 0",
+    "prebuild": "npm run generate",
+    "predev": "npm run generate",
+    "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^5.17.0",
-    "ts-node": "^10.9.2"
+    "@prisma/client": "^5.17.0"
   },
   "devDependencies": {
-    "prisma": "^5.17.0"
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "eslint": "^8.57.0",
+    "prisma": "^5.10.2",
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
   },
   "exports": {
-    "./client": "./src/index.ts"
+    ".": "./src/index.ts"
   }
 }

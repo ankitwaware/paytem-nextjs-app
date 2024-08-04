@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
+<<<<<<< HEAD:packages/typescript-config/base.json
+<<<<<<< Updated upstream:packages/typescript-config/base.json
+    "outDir": "dist"
+  }
+=======
+    "forceConsistentCasingInFileNames": true,
+=======
+    "forceConsistentCasingInFileNames": false,
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3:packages/config-typescript/base.json
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "inlineSources": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "strictNullChecks": true
+  },
+  "exclude": ["node_modules"]
+<<<<<<< HEAD:packages/typescript-config/base.json
+>>>>>>> Stashed changes:packages/config-typescript/base.json
+=======
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3:packages/config-typescript/base.json
+}

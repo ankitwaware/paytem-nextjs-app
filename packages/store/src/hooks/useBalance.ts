@@ -1,7 +1,20 @@
-import { useRecoilValue } from "recoil"
-import { balanceAtom } from "../atoms/balance"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  unlockedBalanceAtom,
+  lockedBalanceAtom,
+  totalBalanceSelector,
+} from "../atoms/balance";
 
 export const useBalance = () => {
-    const value = useRecoilValue(balanceAtom);
-    return value;
-}  
+  const [unlocked, setunlockedBalance] = useRecoilState(unlockedBalanceAtom);
+  const [locked, setlockedBalance] = useRecoilState(lockedBalanceAtom);
+  const total = useRecoilValue(totalBalanceSelector);
+
+  return {
+    unlocked: unlocked,
+    locked: locked,
+    total: total,
+    setunlockedBalance,
+    setlockedBalance,
+  };
+};

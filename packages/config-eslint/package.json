@@ -4,7 +4,11 @@
   "private": true,
   "devDependencies": {
     "@vercel/style-guide": "^5.2.0",
+<<<<<<< HEAD
     "eslint-config-turbo": "^2.0.0",
     "eslint-plugin-only-warn": "latest"
+=======
+    "eslint-config-turbo": "^2.0.0"
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
   }
 }

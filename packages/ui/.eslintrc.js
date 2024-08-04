@@ -1,5 +1,5 @@
-/** @type {import("eslint").Linter.Config} */
 module.exports = {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   root: true,
   extends: ["@repo/eslint-config/react-internal.js"],
@@ -13,3 +13,7 @@ module.exports = {
   extends: ["@repo/eslint-config/reactInternal.js"],
 };
 >>>>>>> Stashed changes
+=======
+  extends: ["@repo/eslint-config/react.js"],
+};
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3

@@ -1,4 +1,4 @@
-<h1 align='center'>CMS</h1>
+<h1 align='center'>Paytem Wallet</h1>
 
 ## Table of contents
 
@@ -6,15 +6,11 @@
    ```bash
    git clone https://github.com/ankitwaware/paytem-nextjs-app.git
    ```
-2. Navigate to the project directory:
-   ```bash
-   cd cms
-   ```
-3. Run the following command to start the application:
+<!-- 2. Run the following command to start the application:
    ```bash
    docker volume create postgres-data # (optional) run this command if you face any mount volume / volume not exist error
    docker-compose up
-   ```
+   ``` -->
 
 ### Without Docker
 
@@ -29,14 +25,14 @@
 3. (optional) Start a PostgreSQL database using Docker:
    ```bash
    docker run -d \
-       --name cms-db \
+       --name payetm-db \
        -e POSTGRES_PASSWORD=mypassword \
        -p 5432:5432 \
        postgres
    ```
    based on this command the connection url will be
    ```
-   DATABASE_URL=postgresql://:mypassword@localhost:5432/?schema=public
+   DATABASE_URL=postgresql://postgres:mypassword@localhost:5432/postgres?schema=public
    ```
 4. Create a `.env` file based on the `.env.example` file and configure the `DATABASE_URL` with your postgreSQL connection string.
 5. Install dependencies:

@@ -1,11 +1,13 @@
-export function Card({
+import { ReactNode } from "react";
+
+export default function Card({
   className,
   title,
   children,
-  href,
 }: {
   className?: string;
   title: string;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   children: React.ReactNode;
   href: string;
@@ -14,17 +16,17 @@ export function Card({
   children?: ReactNode;
 }) {
 >>>>>>> Stashed changes
+=======
+  children: ReactNode;
+}): JSX.Element {
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
   return (
-    <a
-      className={className}
-      href={`${href}?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"`}
-      rel="noopener noreferrer"
-      target="_blank"
+    <div
+      className={`flex flex-col rounded-lg bg-slate-50 p-4 font-medium ${className}`}
     >
-      <h2>
-        {title} <span>-&gt;</span>
-      </h2>
-      <p>{children}</p>
-    </a>
+      <h3 className="mb-1 border-b border-slate-600 text-lg">{title}</h3>
+
+      {children}
+    </div>
   );
 }
