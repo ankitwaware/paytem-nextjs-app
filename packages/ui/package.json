@@ -32,12 +32,11 @@
 =======
     "./testTailwind": "./src/TailwindTest.tsx",
     "./balanceItem": "./src/BalanceItem.tsx",
-    "./TransactionItem": "./src/TransactionItem.tsx",
-    "./Card": "./src/Card.tsx"
+    "./TransactionItem": "./src/TransactionItem.tsx"
   },
   "scripts": {
     "build": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
-    "lint": "eslint src/",
+    "lint": "eslint src/ --max-warnings 10",
     "dev": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
     "type-check": "tsc --noEmit",
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3

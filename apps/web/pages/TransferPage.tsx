@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 import AddMoney from "../components/transfer/addMoney";
 import Balance from "../components/transfer/balance";
@@ -7,6 +8,11 @@ import AddMoney from "../components/transfer/AddMoney";
 import Balance from "../components/transfer/Balance";
 import OnRampTransaction from "../components/transfer/OnRampTransaction";
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+import AddMoney from "../components/transfer/addMoney";
+import Balance from "../components/transfer/balance";
+import OnRampTransaction from "../components/transfer/onRamptransaction";
+>>>>>>> Stashed changes
 
 export default function TransferPage() {
   return (

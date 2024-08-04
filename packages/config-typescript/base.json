@@ -16,6 +16,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
+<<<<<<< Updated upstream
 <<<<<<< HEAD:packages/typescript-config/base.json
 <<<<<<< Updated upstream:packages/typescript-config/base.json
     "outDir": "dist"
@@ -25,6 +26,9 @@
 =======
     "forceConsistentCasingInFileNames": false,
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3:packages/config-typescript/base.json
+=======
+    "forceConsistentCasingInFileNames": true,
+>>>>>>> Stashed changes
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "inlineSources": false,

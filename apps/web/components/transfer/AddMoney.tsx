@@ -1,9 +1,13 @@
 "use client";
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 import Card from "@repo/ui/card";
 =======
 import Card from "@repo/ui/Card";
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+import Card from "@repo/ui/card";
+>>>>>>> Stashed changes
 
 import { addMoneySchema, addMoneyInput } from "../../schema/addMoneySchema";
 import { Form, useForm, FormSubmitHandler } from "react-hook-form";
@@ -33,25 +37,34 @@ export default function AddMoney({ className }: { className?: string }) {
     payload,
   ) => {
     const { data } = payload;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     console.log(data);
 =======
     console.log(data)
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+    console.log(data);
+>>>>>>> Stashed changes
 
     const { bank, amount } = data;
     // redirect url of selected Bank
     // const redirectUrl = supported_banks.find(
     //   (supp_bank) => supp_bank.name === bank,
     // )?.redirectUrl;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     // window.location.href = redirectUrl || "";
 =======
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+    // window.location.href = redirectUrl || "";
+>>>>>>> Stashed changes
 
     try {
       // transaction unique token
       const token = (Math.random() * 1000 + 1).toString();
+<<<<<<< Updated upstream
 <<<<<<< HEAD
       const bankUrl = "http://localhost:8080/hdfcwebhook";
 
@@ -60,14 +73,19 @@ export default function AddMoney({ className }: { className?: string }) {
 
       // fake bank api to handle add amount
 =======
+=======
+      const bankUrl = "http://localhost:8080/hdfcwebhook";
+>>>>>>> Stashed changes
 
       const NewTxn = await createOnrampTransaction(bank, amount, token);
-
-      // window.location.href = redirectUrl || "";
+      const userId = NewTxn.tnx.userId.toString();
 
       // fake bank api to handle add amount
+<<<<<<< Updated upstream
       const bankUrl = `http://localhost:8080/hdfcwebhook`;
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+>>>>>>> Stashed changes
       fetch(bankUrl, {
         method: "POST",
         headers: {
@@ -75,6 +93,7 @@ export default function AddMoney({ className }: { className?: string }) {
         },
         body: JSON.stringify({
           token: token,
+<<<<<<< Updated upstream
 <<<<<<< HEAD
           userId: userId,
           amount: amount,
@@ -87,6 +106,12 @@ export default function AddMoney({ className }: { className?: string }) {
       });
 
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+          userId: userId,
+          amount: amount,
+        }),
+      });
+>>>>>>> Stashed changes
     } catch (error) {
       console.log(error);
     }

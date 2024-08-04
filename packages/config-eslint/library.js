@@ -31,10 +31,13 @@ module.exports = {
       files: ["*.js?(x)", "*.ts?(x)"],
     },
   ],
+<<<<<<< Updated upstream
 <<<<<<< HEAD:packages/eslint-config/library.js
 <<<<<<< Updated upstream:packages/eslint-config/library.js
 };
 =======
+=======
+>>>>>>> Stashed changes
   rules: {
     "check-file/filename-naming-convention": [
       "error",
@@ -44,8 +47,12 @@ module.exports = {
     ]
   },
 
+<<<<<<< Updated upstream
 };
 >>>>>>> Stashed changes:packages/config-eslint/library.js
 =======
 };
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3:packages/config-eslint/library.js
+=======
+};
+>>>>>>> Stashed changes

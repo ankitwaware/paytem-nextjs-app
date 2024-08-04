@@ -18,7 +18,10 @@ declare const globalThis: {
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 
 export default prisma;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
 export * from "@prisma/client";
 
 if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = prisma;

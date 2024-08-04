@@ -13,7 +13,7 @@ import { session, token } from "../types/interfaces";
 >>>>>>> Stashed changes:apps/web/lib/auth.ts
 =======
 import prisma from "@repo/database";
-import { genrateJWT } from "./functions/genrateJWT";
+import { genrateJWT } from "./functions/genrateJwt";
 import { session, token } from "../types/interfaces";
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3:apps/web/lib/auth.ts
 import GoogleProvider from "next-auth/providers/google";

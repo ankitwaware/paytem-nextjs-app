@@ -7,6 +7,7 @@ export default function Card({
 }: {
   className?: string;
   title: string;
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
   children: React.ReactNode;
@@ -20,6 +21,10 @@ export default function Card({
   children: ReactNode;
 }): JSX.Element {
 >>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
+=======
+  children?: ReactNode;
+}) {
+>>>>>>> Stashed changes
   return (
     <div
       className={`flex flex-col rounded-lg bg-slate-50 p-4 font-medium ${className}`}
