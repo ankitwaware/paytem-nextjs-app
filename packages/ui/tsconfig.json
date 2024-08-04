@@ -1,8 +1,12 @@
 {
+<<<<<<< Updated upstream
   "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
     "outDir": "dist"
   },
+=======
+  "extends": "@repo/typescript-config/reactLibrary.json",
+>>>>>>> Stashed changes
   "include": ["src", "components"],
   "exclude": ["node_modules", "dist"]
 }

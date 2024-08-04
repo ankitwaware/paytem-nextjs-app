@@ -1,9 +1,15 @@
 import { NextAuthOptions } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
+<<<<<<< Updated upstream:apps/user-app/lib/auth.ts
 import { PrismaClient } from "@repo/database/client";
 import { genrateJWT } from "./genrateJWT";
 import { session, token } from "./interfaces";
+=======
+import prisma from "@repo/database";
+import { genrateJWT } from "./functions/genrateJwt";
+import { session, token } from "../types/interfaces";
+>>>>>>> Stashed changes:apps/web/lib/auth.ts
 import GoogleProvider from "next-auth/providers/google";
 import { JWT } from "next-auth/jwt";
 

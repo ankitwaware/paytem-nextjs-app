@@ -20,6 +20,19 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
+<<<<<<< Updated upstream:packages/typescript-config/base.json
     "outDir": "dist"
   }
+=======
+    "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "inlineSources": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "strictNullChecks": true
+  },
+  "exclude": ["node_modules"]
+>>>>>>> Stashed changes:packages/config-typescript/base.json
 }

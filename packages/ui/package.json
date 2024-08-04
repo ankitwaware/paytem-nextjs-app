@@ -6,10 +6,22 @@
     "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
     "./code": "./src/code.tsx",
+<<<<<<< Updated upstream
     "./testTailwind": "./components/TailwindTest.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
+=======
+    "./testTailwind": "./src/TailwindTest.tsx",
+    "./balanceItem": "./src/BalanceItem.tsx",
+    "./TransactionItem": "./src/TransactionItem.tsx"
+  },
+  "scripts": {
+    "build": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
+    "lint": "eslint src/ --max-warnings 10",
+    "dev": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
+    "type-check": "tsc --noEmit",
+>>>>>>> Stashed changes
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {

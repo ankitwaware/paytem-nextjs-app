@@ -6,9 +6,14 @@ export function Card({
 }: {
   className?: string;
   title: string;
+<<<<<<< Updated upstream
   children: React.ReactNode;
   href: string;
 }): React.JSX.Element {
+=======
+  children?: ReactNode;
+}) {
+>>>>>>> Stashed changes
   return (
     <a
       className={className}
