@@ -1,5 +1,9 @@
 "use client";
+<<<<<<< HEAD
+import Card from "@repo/ui/card";
+=======
 import Card from "@repo/ui/Card";
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
 
 import { addMoneySchema, addMoneyInput } from "../../schema/addMoneySchema";
 import { Form, useForm, FormSubmitHandler } from "react-hook-form";
@@ -29,17 +33,33 @@ export default function AddMoney({ className }: { className?: string }) {
     payload,
   ) => {
     const { data } = payload;
+<<<<<<< HEAD
+    console.log(data);
+=======
     console.log(data)
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
 
     const { bank, amount } = data;
     // redirect url of selected Bank
     // const redirectUrl = supported_banks.find(
     //   (supp_bank) => supp_bank.name === bank,
     // )?.redirectUrl;
+<<<<<<< HEAD
+    // window.location.href = redirectUrl || "";
+=======
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
 
     try {
       // transaction unique token
       const token = (Math.random() * 1000 + 1).toString();
+<<<<<<< HEAD
+      const bankUrl = "http://localhost:8080/hdfcwebhook";
+
+      const NewTxn = await createOnrampTransaction(bank, amount, token);
+      const userId = NewTxn.tnx.userId.toString();
+
+      // fake bank api to handle add amount
+=======
 
       const NewTxn = await createOnrampTransaction(bank, amount, token);
 
@@ -47,6 +67,7 @@ export default function AddMoney({ className }: { className?: string }) {
 
       // fake bank api to handle add amount
       const bankUrl = `http://localhost:8080/hdfcwebhook`;
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
       fetch(bankUrl, {
         method: "POST",
         headers: {
@@ -54,11 +75,18 @@ export default function AddMoney({ className }: { className?: string }) {
         },
         body: JSON.stringify({
           token: token,
+<<<<<<< HEAD
+          userId: userId,
+          amount: amount,
+        }),
+      });
+=======
           userId: NewTxn.tnx?.userId?.toString(),
           amount: amount,
         }),
       });
 
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
     } catch (error) {
       console.log(error);
     }

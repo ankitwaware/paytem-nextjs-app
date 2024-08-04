@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import Providers from "../components/Providers";
+import Providers from "../components/providers";
 
 export const metadata: Metadata = {
   title: "Paytem App",
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 import { Roboto } from "next/font/google";
-import Appbar from "../components/navBar/appbar";
+import Appbar from "../components/navBar/appBar";
 
 const roboto = Roboto({
   weight: ["400", "100", "300", "500", "700", "900"],

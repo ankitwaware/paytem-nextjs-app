@@ -1,4 +1,4 @@
-import PaytemHeading from "../PaytemHeading";
+import PaytemHeading from "../paytemHeading";
 import NavBtn from "./navBtn";
 
 interface NavbarProp {

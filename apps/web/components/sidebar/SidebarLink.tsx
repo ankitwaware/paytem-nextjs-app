@@ -14,7 +14,7 @@ export default function SidebarLink({ href, Icon, linkText }: SidebarLinkProp) {
   
   return (
     <div
-      className={`flex h-8 items-center gap-x-2 pb-2 font-bold ${selected ? "text-blue-500" : "text-slate-800"} `}
+      className={`flex h-8 w-full items-center gap-x-2 pb-2 font-semibold ${selected ? "text-blue-500" : "text-slate-800"} `}
     >
       {Icon}
       <Link href={href} className="mt-1">

@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import Navbar from "./navbar";
+import Navbar from "./navBar";
 import { useRouter } from "next/navigation";
 
 export default function Appbar() {

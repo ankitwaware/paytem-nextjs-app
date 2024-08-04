@@ -1,5 +1,9 @@
 import Card from "@repo/ui/card";
+<<<<<<< HEAD
+import BalanceItem from "@repo/ui/balanceItem";
+=======
 import BalanceItem from "../../../../packages/ui/src/BalanceItem";
+>>>>>>> 081c1df5d2c3fe12dbeb3f23206ffa20d95317a3
 import getBalance from "../../lib/functions/getBalance";
 
 export default async function Balance({ className }: { className?: string }) {
