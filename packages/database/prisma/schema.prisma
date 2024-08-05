@@ -20,9 +20,11 @@ model User {
   password          String
   phoneNumber       String              @unique
   balance           Balance?
-  onRampTransaction OnRampTransaction[]
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
+  onRampTransaction OnRampTransaction[]
+  sentTransfers     p2pTransaction[]    @relation(name: "FromUserRelation")
+  receivedTransfers p2pTransaction[]    @relation(name: "ToUserRelation")
 }
 
 model Merchant {
@@ -50,6 +52,18 @@ model OnRampTransaction {
   startTime DateTime     @default(now())
   userId    Int
   user      User         @relation(fields: [userId], references: [id])
+}
+
+model p2pTransaction {
+  id         Int          @id @default(autoincrement())
+  token      String       @unique
+  amount     Int
+  status     onRampStatus @default(Processing)
+  timeStamp  DateTime
+  fromUserId Int
+  fromUser   User         @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])
+  toUserId   Int
+  toUser     User         @relation(name: "ToUserRelation", fields: [toUserId], references: [id])
 }
 
 enum authType {

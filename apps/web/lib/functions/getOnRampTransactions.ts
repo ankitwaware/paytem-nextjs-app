@@ -10,13 +10,6 @@ export default async function getOnRampTransactions() {
     where: {
       userId: userId,
     },
-    select: {
-      id: true,
-      status: true,
-      amount: true,
-      provider: true,
-      startTime: true,
-    },
   });
 
   return userTransactions;
