@@ -1,4 +1,4 @@
-import PersonToPersonPage from "../../../pages/p2pPage";
+import PersonToPersonPage from "../../../pages/personToPersonPage";
 
 export default function Page() {
   return <PersonToPersonPage />;

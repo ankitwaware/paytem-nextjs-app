@@ -7,6 +7,7 @@ import prisma, { Balance } from "@repo/database";
 export default async function p2pTransferAction(
   toPhoneNumber: string,
   amount: string,
+  token: string,
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -96,6 +97,17 @@ export default async function p2pTransferAction(
           },
         },
       });
+    });
+
+    // after db transaction success the onramp transaction
+    await prisma.onRampTransaction.update({
+      where: {
+        token: token,
+        userId: fromUserId,
+      },
+      data: {
+        status: "Success",
+      },
     });
 
     return {
