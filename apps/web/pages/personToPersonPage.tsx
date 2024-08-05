@@ -1,4 +1,5 @@
 import PersonToPerson from "../components/p2p/personToPerson";
+import PersonToPersonTransactions from "../components/p2p/perToPerTransactions";
 
 export default function PersonToPersonPage() {
   return (
@@ -7,7 +8,10 @@ export default function PersonToPersonPage() {
         Transfer to Number
       </h1>
 
-      <PersonToPerson />
+      <div className="flex justify-around">
+        <PersonToPerson className="" />
+        <PersonToPersonTransactions className="min-w-[450px] self-start mt-9" />
+      </div>
     </div>
   );
 }

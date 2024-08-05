@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth";
 import authOptions from "../auth";
 import prisma, { Balance } from "@repo/database";
+import { revalidatePath } from "next/cache";
 
 export default async function p2pTransferAction(
   toPhoneNumber: string,
@@ -23,8 +24,10 @@ export default async function p2pTransferAction(
       select: {
         name: true,
         balance: true,
+        phoneNumber: true,
       },
     });
+    console.log("from acct at ser ac",fromAccount);
 
     if (!fromAccount) {
       return {
@@ -43,6 +46,9 @@ export default async function p2pTransferAction(
       },
     });
 
+    console.log("to acct at ser ac",toAccount);
+    
+
     if (!toAccount) {
       return {
         message: "Failed to send",
@@ -53,6 +59,7 @@ export default async function p2pTransferAction(
       };
     }
 
+
     // check sender account has sufficient balance
     if (fromAccount.balance?.amount! < transferAmount) {
       return {
@@ -60,6 +67,17 @@ export default async function p2pTransferAction(
         amount: {
           name: "amount",
           message: "insufficient Balance",
+        },
+      };
+    }
+
+    // send to self not allowed
+    if (fromAccount.phoneNumber === toPhoneNumber) {
+      return {
+        message: "Failed to send",
+        phoneNumber: {
+          name: "phoneNumber",
+          message: "cannot send to self",
         },
       };
     }
@@ -99,16 +117,23 @@ export default async function p2pTransferAction(
       });
     });
 
-    // after db transaction success the onramp transaction
-    await prisma.onRampTransaction.update({
+    console.log("at before create p2p");
+
+    // after db transaction success the p2p transaction
+    const newTxn = await prisma.p2pTransaction.update({
       where: {
         token: token,
-        userId: fromUserId,
+        fromUserId: fromUserId,
+        toUserId: toAccount.id,
       },
       data: {
         status: "Success",
       },
     });
+
+    console.log("at create p2p serverac", newTxn);
+
+    revalidatePath("dashboard/p2p");
 
     return {
       type: "done",

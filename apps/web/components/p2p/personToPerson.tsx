@@ -9,9 +9,9 @@ import PerToPerInputSchema, {
   PerToPerInputType,
 } from "../../schema/personToPersonSchema";
 import p2pTransferAction from "../../lib/actions/p2pTransfer";
-import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
+import createP2PTransaction from "../../lib/actions/createP2PTransaction";
 
-export default function PersonToPerson() {
+export default function PersonToPerson({className}:{className?:string}) {
   const {
     control,
     register,
@@ -34,9 +34,9 @@ export default function PersonToPerson() {
     const { amount, phoneNumber } = payload.data;
 
     const token = (Math.random() * 1000 + 1).toString();
-    await createOnrampTransaction(phoneNumber, amount, token);
+    await createP2PTransaction(token, amount, phoneNumber);
 
-    const response = await p2pTransferAction(phoneNumber, amount,token);
+    const response = await p2pTransferAction(phoneNumber, amount, token);
 
     if (response?.message) {
       setError("root", {
@@ -55,12 +55,12 @@ export default function PersonToPerson() {
       }
     }
 
-    // reset and clear errors afert 3sec
+    // reset and clear errors from afert 3sec
     if (response.type == "done") {
       setTimeout(() => {
         clearErrors();
         reset();
-      }, 5000);
+      }, 3000);
     }
   };
 
@@ -69,7 +69,7 @@ export default function PersonToPerson() {
       control={control}
       onSubmit={onSubmitHandler}
       headers={{ "Content-Type": "application/json" }}
-      className="flex h-96 items-center justify-center"
+      className={`flex h-96 items-center ${className}`}
     >
       <Card title="send" className="size-80 justify-between">
         <FormInput
