@@ -18,7 +18,9 @@ export default function Appbar() {
 
   return (
     <Navbar
-      className={pathname === "/signin" || pathname === "/signup" ? "hidden" : ""}
+      className={
+        pathname === "/signin" || pathname === "/signup" ? "hidden" : ""
+      }
       user={session.data?.user}
       signin={() => router.push("/signin")}
       signout={signoutHandler}

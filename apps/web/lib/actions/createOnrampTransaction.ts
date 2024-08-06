@@ -26,7 +26,7 @@ export async function createOnrampTransaction(
     },
   });
 
-  revalidatePath("/dashboard/transfer")
+  revalidatePath("/dashboard/transfer");
   return {
     message: "Done",
     tnx,

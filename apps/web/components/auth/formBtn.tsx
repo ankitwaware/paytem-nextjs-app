@@ -21,6 +21,6 @@ export default function FormBtn({
       disabled={isSubmitting}
     >
       {isSubmitting ? "Submitting..." : btnText}
-    </button> 
+    </button>
   );
 }

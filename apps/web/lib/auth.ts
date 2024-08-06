@@ -66,7 +66,7 @@ const authOptions = {
               uid: userdb.id,
               name: userdb.name,
               email: userdb.email,
-              jwtToken: jwt
+              jwtToken: jwt,
             };
           }
 

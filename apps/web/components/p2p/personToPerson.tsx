@@ -11,7 +11,7 @@ import PerToPerInputSchema, {
 import p2pTransferAction from "../../lib/actions/p2pTransfer";
 import createP2PTransaction from "../../lib/actions/createP2PTransaction";
 
-export default function PersonToPerson({className}:{className?:string}) {
+export default function PersonToPerson({ className }: { className?: string }) {
   const {
     control,
     register,

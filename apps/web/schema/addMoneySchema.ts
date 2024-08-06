@@ -16,7 +16,6 @@ export const addMoneySchema = z.object({
       return z.NEVER;
     }
 
-
     return stringMoney;
   }),
   bank: z.string(),

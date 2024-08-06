@@ -10,7 +10,7 @@ export default function PersonToPersonPage() {
 
       <div className="flex justify-around">
         <PersonToPerson className="" />
-        <PersonToPersonTransactions className="min-w-[450px] self-start mt-9" />
+        <PersonToPersonTransactions className="mt-9 min-w-[450px] self-start" />
       </div>
     </div>
   );

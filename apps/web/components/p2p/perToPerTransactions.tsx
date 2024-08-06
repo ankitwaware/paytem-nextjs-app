@@ -38,7 +38,7 @@ export default async function PersonToPersonTransactions({
           fromUserId,
           toUserId,
           toUser: { phoneNumber },
-          fromUser:{phoneNumber:fromUserPhoneNumber}
+          fromUser: { phoneNumber: fromUserPhoneNumber },
         } = transaction;
 
         return (
@@ -60,5 +60,3 @@ export default async function PersonToPersonTransactions({
     </Card>
   );
 }
-
-

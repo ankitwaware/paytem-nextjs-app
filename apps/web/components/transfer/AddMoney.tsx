@@ -66,9 +66,8 @@ export default function AddMoney({ className }: { className?: string }) {
       setTimeout(() => {
         clearErrors();
         reset();
-        router.refresh()
+        router.refresh();
       }, 3000);
-    
     } catch (error) {
       console.log(error);
     }

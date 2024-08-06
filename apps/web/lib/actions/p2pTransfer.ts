@@ -27,7 +27,7 @@ export default async function p2pTransferAction(
         phoneNumber: true,
       },
     });
-    console.log("from acct at ser ac",fromAccount);
+    console.log("from acct at ser ac", fromAccount);
 
     if (!fromAccount) {
       return {
@@ -46,8 +46,7 @@ export default async function p2pTransferAction(
       },
     });
 
-    console.log("to acct at ser ac",toAccount);
-    
+    console.log("to acct at ser ac", toAccount);
 
     if (!toAccount) {
       return {
@@ -58,7 +57,6 @@ export default async function p2pTransferAction(
         },
       };
     }
-
 
     // check sender account has sufficient balance
     if (fromAccount.balance?.amount! < transferAmount) {

@@ -1,6 +1,10 @@
-
 import SidebarLink from "./sidebarLink";
-import { HomeIcon,TransactionsIcon,TransferIcon,P2PTransferIcon } from "./SVG/sideBarIcons";
+import {
+  HomeIcon,
+  TransactionsIcon,
+  TransferIcon,
+  P2PTransferIcon,
+} from "./SVG/sideBarIcons";
 
 export default function Sidebar() {
   return (

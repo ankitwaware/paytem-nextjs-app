@@ -6,11 +6,11 @@
    ```bash
    git clone https://github.com/ankitwaware/paytem-nextjs-app.git
    ```
-<!-- 2. Run the following command to start the application:
-   ```bash
-   docker volume create postgres-data # (optional) run this command if you face any mount volume / volume not exist error
-   docker-compose up
-   ``` -->
+   <!-- 2. Run the following command to start the application:
+      ```bash
+      docker volume create postgres-data # (optional) run this command if you face any mount volume / volume not exist error
+      docker-compose up
+      ``` -->
 
 ### Without Docker
 

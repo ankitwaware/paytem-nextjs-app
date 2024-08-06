@@ -1,10 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
-import {
-  SIgnupFormData,
-  SIgnupFormSchema,
-} from "../../schema/authFormSchema";
+import { SIgnupFormData, SIgnupFormSchema } from "../../schema/authFormSchema";
 import FormInput from "./formInput";
 import { signUpResBody } from "../../app/api/register/route";
 import { useRouter } from "next/navigation";
