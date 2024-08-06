@@ -19,9 +19,9 @@ const PerToPerInputSchema = z.object({
       return strNumber;
     }),
   amount: z.string().transform((strNumber, ctx) => {
-    const phoneNumber = parseInt(strNumber);
+    const amountNumber = parseInt(strNumber);
 
-    if (isNaN(phoneNumber)) {
+    if (isNaN(amountNumber) || amountNumber < 1) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Enter Valid amount",

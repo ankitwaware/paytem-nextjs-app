@@ -35,7 +35,6 @@ export default function PersonToPerson({className}:{className?:string}) {
 
     const token = (Math.random() * 1000 + 1).toString();
     await createP2PTransaction(token, amount, phoneNumber);
-
     const response = await p2pTransferAction(phoneNumber, amount, token);
 
     if (response?.message) {
@@ -56,7 +55,7 @@ export default function PersonToPerson({className}:{className?:string}) {
     }
 
     // reset and clear errors from afert 3sec
-    if (response.type == "done") {
+    if (response.type === "done") {
       setTimeout(() => {
         clearErrors();
         reset();

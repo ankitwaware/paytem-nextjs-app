@@ -10,7 +10,7 @@ interface SidebarLinkProp {
 
 export default function SidebarLink({ href, Icon, linkText }: SidebarLinkProp) {
   const pathname = usePathname();
-  const selected = pathname == href;
+  const selected = pathname === href;
   
   return (
     <div

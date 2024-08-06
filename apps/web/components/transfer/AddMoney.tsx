@@ -14,6 +14,8 @@ const supported_banks = [
 
 export default function AddMoney({ className }: { className?: string }) {
   const {
+    clearErrors,
+    reset,
     control,
     register,
     formState: { errors, isSubmitting },
@@ -60,8 +62,13 @@ export default function AddMoney({ className }: { className?: string }) {
       // fix Refresh the current page to see successfull transfer
       // router.refresh();
 
-      // Refresh after 2 sec
-      setTimeout(() => router.refresh(), 2000);
+      // reset and clear errors from afert 3sec
+      setTimeout(() => {
+        clearErrors();
+        reset();
+        router.refresh()
+      }, 3000);
+    
     } catch (error) {
       console.log(error);
     }

@@ -28,7 +28,7 @@ export default async function createP2PTransaction(
     };
   }
 
-  if (toUser.id == fromUserId) {
+  if (toUser.id === fromUserId) {
     return {
       message: "not allowed to send self",
     };

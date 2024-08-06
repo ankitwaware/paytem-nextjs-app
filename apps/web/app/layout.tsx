@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 import { Roboto } from "next/font/google";
-import Appbar from "../components/navBar/appBar";
+import Appbar from "../components/navBar/appbar";
 
 const roboto = Roboto({
   weight: ["400", "100", "300", "500", "700", "900"],

@@ -150,12 +150,6 @@ export default function SignUpForm() {
         className="text-blue-600"
         onClick={() => router.push("/signin")}
       />
-
-      {/* <hr className="h-0.5 bg-black" />
-
-      <FormBtn type="button" btnText="SIgnUp with google" whiteBtn={true} />
-
-      <FormBtn type="button" btnText="SIgnUp with github" whiteBtn={true} /> */}
     </Form>
   );
 }

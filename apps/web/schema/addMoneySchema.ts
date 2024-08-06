@@ -3,7 +3,7 @@ import * as z from "zod";
 export const addMoneySchema = z.object({
   amount: z.string().transform((stringMoney, ctx) => {
     const parsedNumber = parseFloat(stringMoney);
-    if (isNaN(parsedNumber)) {
+    if (isNaN(parsedNumber) || parsedNumber < 1) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Enter a valid amount",
@@ -15,6 +15,8 @@ export const addMoneySchema = z.object({
       // inferred return type.
       return z.NEVER;
     }
+
+
     return stringMoney;
   }),
   bank: z.string(),
