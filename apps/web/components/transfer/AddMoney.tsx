@@ -2,7 +2,7 @@
 import { addMoneySchema, addMoneyInput } from "../../schema/addMoneySchema";
 import { Form, useForm, FormSubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
+// import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
 import Card from "@repo/ui/card";
 import { useRouter } from "next/navigation";
 
@@ -42,8 +42,8 @@ export default function AddMoney({ className }: { className?: string }) {
     try {
       // transaction unique token
       const token = (Math.random() * 1000 + 1).toString();
-      const NewTxn = await createOnrampTransaction(bank, amount, token);
-      const userId = NewTxn.tnx.userId.toString();
+      // const NewTxn = await createOnrampTransaction(bank, amount, token);
+      // const userId = NewTxn.tnx.userId.toString();
 
       // fake bank api to handle add amount
       const bankUrl = `http://localhost:8080/hdfcwebhook`;
@@ -54,7 +54,7 @@ export default function AddMoney({ className }: { className?: string }) {
         },
         body: JSON.stringify({
           token: token,
-          userId: userId,
+          // userId: userId,
           amount: amount,
         }),
       });

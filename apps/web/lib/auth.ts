@@ -1,6 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
 import prisma from "@repo/database";
 import { genrateJWT } from "./functions/genrateJwt";
 import { session, token } from "../types/interfaces";
@@ -49,11 +48,8 @@ const authOptions = {
             },
           });
 
-          const correctPassword = await compare(
-            credentials?.password || "",
-            userdb!.password,
-          );
-
+          const correctPassword = credentials?.password === userdb!.password
+          
           if (!correctPassword) return null;
 
           if (userdb && correctPassword) {

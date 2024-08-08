@@ -8,8 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import PerToPerInputSchema, {
   PerToPerInputType,
 } from "../../schema/personToPersonSchema";
-import p2pTransferAction from "../../lib/actions/p2pTransfer";
-import createP2PTransaction from "../../lib/actions/createP2PTransaction";
+// import p2pTransferAction from "../../lib/actions/p2pTransfer";
 
 export default function PersonToPerson({ className }: { className?: string }) {
   const {
@@ -34,8 +33,7 @@ export default function PersonToPerson({ className }: { className?: string }) {
     const { amount, phoneNumber } = payload.data;
 
     const token = (Math.random() * 1000 + 1).toString();
-    await createP2PTransaction(token, amount, phoneNumber);
-    const response = await p2pTransferAction(phoneNumber, amount, token);
+    // const response = await p2pTransferAction(phoneNumber, amount, token);
 
     if (response?.message) {
       setError("root", {

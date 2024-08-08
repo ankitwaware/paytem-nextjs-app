@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import authOptions from "../auth";
 import prisma, { Balance } from "@repo/database";
 import { revalidatePath } from "next/cache";
+import createP2PTransaction from "./createP2PTransaction";
 
 export default async function p2pTransferAction(
   toPhoneNumber: string,
@@ -11,6 +12,8 @@ export default async function p2pTransferAction(
   token: string,
 ) {
   try {
+    await createP2PTransaction(token, amount, toPhoneNumber);
+
     const session = await getServerSession(authOptions);
     const fromUserId = Number(session?.user.uid);
     // string to number and amount * 100 for decimal amount

@@ -1,22 +1,15 @@
 import Card from "@repo/ui/card";
-
+import P2PTransactionItem from "./perTransactionItem";
 import getP2PTransactions from "../../lib/functions/getP2PTransactions";
-
-import { getServerSession } from "next-auth";
-import authOptions from "../../lib/auth";
-import { session } from "../../types/interfaces";
-import P2PTransactionItem from "./p2pTransactionItem";
 
 export default async function PersonToPersonTransactions({
   className,
 }: {
   className?: string;
 }) {
-  const session = (await getServerSession(authOptions)) as session;
-  const currentUserId = Number(session.user.uid);
   const transactions = await getP2PTransactions();
 
-  if (transactions.length === 0) {
+  if (transactions.length == 0) {
     return (
       <Card title="Recent Transactions" className={`${className}`}>
         <div className="flex h-12 items-center justify-center">
@@ -53,7 +46,6 @@ export default async function PersonToPersonTransactions({
             toUserId={toUserId}
             toUserPhoneNumber={phoneNumber}
             fromUserPhoneNumber={fromUserPhoneNumber}
-            currentUserId={currentUserId}
           />
         );
       })}

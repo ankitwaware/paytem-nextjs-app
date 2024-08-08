@@ -10,13 +10,13 @@ export async function GET() {
       ...session.user,
     });
   } else {
-    return (
-      NextResponse.json({
+    return NextResponse.json(
+      {
         message: "You are not logged in!",
-      }),
+      },
       {
         status: 403,
-      }
+      },
     );
   }
 }

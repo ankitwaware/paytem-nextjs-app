@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   description: "created by ankit",
 };
 
-import { Roboto } from "next/font/google";
+import { Inter } from 'next/font/google'
 import Appbar from "../components/navBar/appbar";
 
-const roboto = Roboto({
-  weight: ["400", "100", "300", "500", "700", "900"],
-  subsets: ["latin"],
-});
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export default function RootLayout({
   children,
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${roboto.className} tracking-wide`}>
+        <body className={`${inter.className}`}>
           <Appbar />
           {children}
         </body>

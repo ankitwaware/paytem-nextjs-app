@@ -7,7 +7,6 @@
       }
     ],
     "strictNullChecks": true,
-    "target": "ES2016"
   },
   "include": [
     "next-env.d.ts",

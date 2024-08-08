@@ -19,15 +19,6 @@ export async function POST(request: Request) {
   try {
     const { username, email, password, number } = await request.json();
 
-    console.log(
-      "SIgn Up Data at /api/register POST",
-      username,
-      email,
-      password,
-      number,
-      typeof number,
-    );
-
     //VALIDATION FOR SIGNUP ON SERVER
     const result = SIgnupFormSchema.safeParse({
       username,

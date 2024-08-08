@@ -1,16 +1,16 @@
 "use server";
-
 import prisma from "@repo/database";
 import { getServerSession } from "next-auth";
 import authOptions from "../auth";
 import { revalidatePath } from "next/cache";
+import { session } from "../../types/interfaces";
 
 export async function createOnrampTransaction(
   provider: string,
   amount: string,
   token: string,
 ) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)as session;
 
   const tnx = await prisma.onRampTransaction.create({
     data: {
