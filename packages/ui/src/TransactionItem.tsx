@@ -1,4 +1,4 @@
-import { onRampStatus } from "@repo/database";
+import { type onRampStatus } from "@repo/database";
 
 export interface TransactionItemProp {
   className?: string;

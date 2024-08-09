@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
-import authOptions from "../auth";
 import prisma from "@repo/database";
+import authOptions from "../auth";
 
 export default async function getOnRampTransactions() {
   const session = await getServerSession(authOptions);
@@ -8,7 +8,7 @@ export default async function getOnRampTransactions() {
 
   const userTransactions = await prisma.onRampTransaction.findMany({
     where: {
-      userId: userId,
+      userId,
     },
   });
 

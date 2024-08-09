@@ -21,7 +21,7 @@ export default function BalanceItem({
     <div
       className={`flex items-center justify-between border-b border-slate-600 py-1.5 ${className}`}
     >
-      <h4>{`${title} balance`}</h4>
+      <h4>`${title} balance`</h4>
       <span>{Indianrupee}</span>
     </div>
   );

@@ -9,7 +9,6 @@
   ],
   "license": "MIT",
   "exports": {
-    "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
     "./code": "./src/code.tsx",
     "./balanceItem": "./src/balanceItem.tsx",
@@ -25,18 +24,19 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@turbo/gen": "^1.12.4",
+    "@repo/database":"*",
     "@repo/eslint-config": "*",
     "@repo/tailwind-config": "*",
     "@repo/typescript-config": "*",
+    "@turbo/gen": "^1.12.4",
+    "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.18",
+    "eslint": "^8.57.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3",
-    "@types/node": "^20.11.24",
-    "@types/eslint": "^8.56.5",
-    "@types/react-dom": "^18.2.19",
-    "eslint": "^8.57.0"
+    "typescript": "^5.3.3"
   }
 }

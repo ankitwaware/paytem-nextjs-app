@@ -1,11 +1,14 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, useForm } from "react-hook-form";
-import { SIgnupFormData, SIgnupFormSchema } from "../../schema/authFormSchema";
-import FormInput from "./formInput";
-import { signUpResBody } from "../../app/api/register/route";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, useForm } from "react-hook-form";
+import {
+  type SIgnupFormData,
+  SIgnupFormSchema,
+} from "../../schema/authFormSchema";
+import { type SignUpResBody } from "../../app/api/register/route";
+import FormInput from "./formInput";
 import FormBtn from "./formBtn";
 
 export default function SignUpForm() {
@@ -31,7 +34,7 @@ export default function SignUpForm() {
     response: Response;
   }) {
     try {
-      const Responsebody: signUpResBody = await signUpResponse.json();
+      const Responsebody = (await signUpResponse.json()) as SignUpResBody;
 
       // after successfull signup, signin user
       const res = await signIn("credentials", {
@@ -41,7 +44,7 @@ export default function SignUpForm() {
       });
 
       if (res?.error) {
-        setError("root.serverError", {
+        setError("root", {
           message: "Signin error after succes",
         });
       }
@@ -51,20 +54,27 @@ export default function SignUpForm() {
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
-      setError("root.serverError", {
+      setError("root", {
         message: "Signin error after succes",
       });
     }
   }
 
-  async function onErrorHandler(params: any) {
-    const { response } = params as { response: Response };
+  type OnErrorProp =
+    | {
+        response: Response;
+        error?: undefined;
+      }
+    | {
+        response?: undefined;
+        error: unknown;
+      };
 
-    const Responsebody: signUpResBody = await response.json();
+  async function onErrorHandler({ response }: OnErrorProp) {
+    const Responsebody = (await response?.json()) as SignUpResBody;
 
-    setError("root.serverError", {
-      type: response.status + "",
+    setError("root", {
+      type: String(response?.status),
       message: Responsebody.message,
     });
 
@@ -94,7 +104,7 @@ export default function SignUpForm() {
 
   return (
     <Form
-      action={"/api/register"}
+      action="/api/register"
       control={control}
       method="post"
       onSuccess={onSuccessHandler} // valid response
@@ -129,23 +139,23 @@ export default function SignUpForm() {
         errorMsg={errors.password?.message}
       />
 
-      {/* server error message */}
-      {errors?.root?.serverError && (
-        <p className="text-sm">{errors?.root?.serverError?.message}</p>
-      )}
+      {/* root server error message */}
+      <p className="text-sm">{errors.root?.message}</p>
 
       <FormBtn
-        type="submit"
+        isSubmit
         btnText="SIgnUp"
         isSubmitting={isSubmitting}
         className="bg-blue-600 text-white"
       />
 
       <FormBtn
-        type="button"
+        isSubmit={false}
         btnText="SIgnIn"
         className="text-blue-600"
-        onClick={() => router.push("/signin")}
+        onClick={() => {
+          router.push("/signin");
+        }}
       />
     </Form>
   );

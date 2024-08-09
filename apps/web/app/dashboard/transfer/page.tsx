@@ -2,7 +2,7 @@ import AddMoney from "../../../components/transfer/addMoney";
 import Balance from "../../../components/transfer/balance";
 import OnRampTransaction from "../../../components/transfer/onRampTransaction";
 
-export default async function Page() {
+export default function Page() {
   return (
     <div className="w-full border-2 px-6 pt-4">
       <h1 className="mb-2 text-3xl font-bold text-blue-600">Transfer</h1>

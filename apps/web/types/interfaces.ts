@@ -1,7 +1,7 @@
-import { DefaultSession, Session } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import type { DefaultSession, Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
-export interface session extends Session {
+export interface CustomSession extends Session {
   user: {
     /** The user's postal address. */
     uid: string;
@@ -15,7 +15,12 @@ export interface session extends Session {
   } & DefaultSession["user"];
 }
 
-export interface token extends JWT {
+export interface Token extends JWT {
+  uid: string;
+  jwtToken: string;
+}
+
+export interface AuthUser extends User {
   uid: string;
   jwtToken: string;
 }

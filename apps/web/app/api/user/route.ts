@@ -9,14 +9,14 @@ export async function GET() {
     return NextResponse.json({
       ...session.user,
     });
-  } else {
-    return NextResponse.json(
-      {
-        message: "You are not logged in!",
-      },
-      {
-        status: 403,
-      },
-    );
   }
+
+  return NextResponse.json(
+    {
+      message: "You are not logged in!",
+    },
+    {
+      status: 403,
+    },
+  );
 }

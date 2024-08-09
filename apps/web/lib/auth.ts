@@ -1,16 +1,21 @@
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, User } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import prisma from "@repo/database";
-import { genrateJWT } from "./functions/genrateJwt";
-import { session, token } from "../types/interfaces";
+import { compare } from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
-import { JWT } from "next-auth/jwt";
+import type { JWT } from "next-auth/jwt";
+import type {
+  AuthUser,
+  CustomSession,
+  Token,
+} from "../types/interfaces";
+import { genrateJWT } from "./functions/genrateJwt";
 
 const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
       // ask for permission on every time
       // authorization: {
       //   params: {
@@ -30,11 +35,8 @@ const authOptions = {
         },
         password: { label: "password", type: "password" },
       },
-      //  todo add credentials type
-      async authorize(credentials): Promise<any> {
+      async authorize(credentials): Promise<AuthUser | null> {
         try {
-          console.log("auth.js ", credentials);
-
           // find user in Databse
           const userdb = await prisma.user.findFirst({
             where: {
@@ -48,27 +50,28 @@ const authOptions = {
             },
           });
 
-          const correctPassword = credentials?.password === userdb!.password
-          
+          if (!userdb) return null;
+
+          const correctPassword = await compare(
+            credentials?.password || "",
+            userdb.password || "",
+          );
+
           if (!correctPassword) return null;
 
-          if (userdb && correctPassword) {
-            // genrate new JWT
-            const jwt = await genrateJWT({
-              id: userdb.id,
-            });
+          // genrate new JWT
+          const jwt = await genrateJWT({
+            id: userdb.id,
+          });
 
-            return {
-              uid: userdb.id,
-              name: userdb.name,
-              email: userdb.email,
-              jwtToken: jwt,
-            };
-          }
-
-          return null;
+          return {
+            id: String(userdb.id),
+            uid: String(userdb.id),
+            name: userdb.name,
+            email: userdb.email,
+            jwtToken: jwt,
+          };
         } catch (error) {
-          console.log(error);
           return null;
         }
       },
@@ -76,20 +79,18 @@ const authOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET || "secret3",
   callbacks: {
-    jwt: async ({ token, user }: { token: JWT; user: any }) => {
-      const newToken = token as token;
-      if (user) {
-        newToken.uid = user.uid;
-        newToken.jwtToken = user.jwtToken;
-      }
+    jwt: ({ token, user }: { token: JWT; user: User }) => {
+      const newToken = token as Token;
+      const newUser = user as AuthUser;
+      newToken.uid = newUser.uid;
+      newToken.jwtToken = newUser.jwtToken;
       return newToken;
     },
     session: ({ session, token }) => {
-      const newSession = session as session;
-      if (newSession.user && token.uid) {
-        newSession.user.uid = token.uid as token["uid"];
-        newSession.user.jwtToken = token.jwtToken as token["jwtToken"];
-      }
+      const newSession = session as CustomSession;
+      const newToken = token as Token;
+      newSession.user.uid = newToken.uid;
+      newSession.user.jwtToken = newToken.jwtToken;
       return newSession;
     },
   },

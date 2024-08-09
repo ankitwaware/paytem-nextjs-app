@@ -1,7 +1,6 @@
-import { onRampStatus } from "@repo/database";
+import { type onRampStatus } from "@repo/database";
 import { getServerSession } from "next-auth";
 import authOptions from "../../lib/auth";
-import { session } from "../../types/interfaces";
 
 export interface P2PTransactionItemProp {
   className?: string;
@@ -16,7 +15,7 @@ export interface P2PTransactionItemProp {
   fromUserPhoneNumber: string;
 }
 
-export default async function P2PTransactionItem({
+export default async function PToPTxnItem({
   id,
   token,
   amount,
@@ -32,10 +31,8 @@ export default async function P2PTransactionItem({
     style: "currency",
     currency: "INR",
   }).format(amount / 100);
-  const session = (await getServerSession(authOptions)) as session;
-  const currentUserId = Number(session.user.uid);
-
-  console.log(fromUserPhoneNumber)
+  const session = await getServerSession(authOptions);
+  const currentUserId = Number(session?.user.uid);
 
   return (
     <div

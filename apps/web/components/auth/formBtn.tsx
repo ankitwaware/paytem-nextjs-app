@@ -1,7 +1,7 @@
 interface FormBtnProp {
   className?: string;
   btnText: string;
-  type: "button" | "submit";
+  isSubmit: boolean;
   isSubmitting?: boolean;
   onClick?: () => void;
 }
@@ -9,13 +9,13 @@ interface FormBtnProp {
 export default function FormBtn({
   className,
   btnText,
-  type,
+  isSubmit,
   onClick,
   isSubmitting,
 }: FormBtnProp) {
   return (
     <button
-      type={type}
+      type={isSubmit ? "submit" : "button"}
       className={`rounded-full border border-blue-500 p-2 text-lg font-medium ${className}`}
       onClick={onClick}
       disabled={isSubmitting}

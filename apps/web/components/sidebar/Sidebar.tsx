@@ -22,7 +22,7 @@ export default function Sidebar() {
           linkText="transaction"
         />
         <SidebarLink
-          href="/dashboard/p2ptransfer"
+          href="/dashboard/p2p"
           Icon={<P2PTransferIcon />}
           linkText="P2P Transfer"
         />

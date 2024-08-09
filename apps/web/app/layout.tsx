@@ -1,19 +1,18 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import Providers from "../components/providers";
+import Appbar from "../components/navBar/appbar";
 
 export const metadata: Metadata = {
   title: "Paytem App",
   description: "created by ankit",
 };
 
-import { Inter } from 'next/font/google'
-import Appbar from "../components/navBar/appbar";
-
 const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-})
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -23,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${inter.className}`}>
+        <body className={inter.className}>
           <Appbar />
           {children}
         </body>

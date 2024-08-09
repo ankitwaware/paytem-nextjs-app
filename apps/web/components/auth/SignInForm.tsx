@@ -1,11 +1,13 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { SIgnInFormData, SIgnInFormSchema } from "../../schema/authFormSchema";
-import FormInput from "./formInput";
 import { useRouter } from "next/navigation";
+import {
+  type SIgnInFormData,
+  SIgnInFormSchema,
+} from "../../schema/authFormSchema";
+import FormInput from "./formInput";
 import FormBtn from "./formBtn";
 
 export default function SignInForm() {
@@ -26,7 +28,6 @@ export default function SignInForm() {
   const router = useRouter();
 
   async function onSubmitHandler({ data }: { data: SIgnInFormData }) {
-    console.log("SIgnin Form data", data);
     const { email, password } = data;
     try {
       const response = await signIn("credentials", {
@@ -35,9 +36,7 @@ export default function SignInForm() {
         redirect: false,
       });
 
-      if (!response!.ok) {
-        console.log(response);
-
+      if (!response?.ok) {
         setError("root.serverError", {
           message: "Please enter valid email/password",
         });
@@ -45,10 +44,8 @@ export default function SignInForm() {
       }
 
       // Process response here
-      if (response!.ok) {
-        router.push("/");
-        return response;
-      }
+      router.push("/");
+      return response;
     } catch (error) {
       return Response.json(
         { message: "Something Went Wrong.Try Again" },
@@ -80,21 +77,21 @@ export default function SignInForm() {
       />
 
       {/* server error message */}
-      {errors?.root?.serverError && (
-        <p className="text-sm">{errors?.root?.serverError?.message}</p>
-      )}
+      <p className="text-sm">{errors.root?.serverError?.message}</p>
 
       <FormBtn
-        type="submit"
+        isSubmit
         btnText="SignIn"
         isSubmitting={isSubmitting}
         className="bg-blue-600 text-white"
       />
 
       <FormBtn
-        type="button"
+        isSubmit={false}
         btnText="SignUp"
-        onClick={() => router.push("/signup")}
+        onClick={() => {
+          router.push("/signup");
+        }}
         className="text-blue-600"
       />
     </Form>

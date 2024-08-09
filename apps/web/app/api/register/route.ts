@@ -3,21 +3,26 @@ import { hash } from "bcrypt";
 import prisma from "@repo/database";
 import { SIgnupFormSchema } from "../../../schema/authFormSchema";
 
-export type signUpResBody = {
-  message: string;
-  username?: { name: "username"; message: string };
-  email?: { name: "email"; message: string };
-  number?: { name: "number"; message: string };
-  password?: { name: "password"; message: string };
+export interface SignUpResBody {
+  message: string | undefined;
+  username?: { name: "username"; message:  string | undefined };
+  email?: { name: "email"; message:  string | undefined };
+  number?: { name: "number"; message:  string | undefined };
+  password?: { name: "password"; message:  string | undefined };
   data?: {
     email: string;
     password: string;
   };
-};
+}
 
 export async function POST(request: Request) {
   try {
-    const { username, email, password, number } = await request.json();
+    const { username, email, password, number } = (await request.json()) as {
+      username: string;
+      email: string;
+      password: string;
+      number: string;
+    };
 
     //VALIDATION FOR SIGNUP ON SERVER
     const result = SIgnupFormSchema.safeParse({
@@ -31,31 +36,26 @@ export async function POST(request: Request) {
     if (!result.success) {
       const formatted = result.error.format();
 
-      let messageString = "Please Enter Valid";
+      const messageString = `Please Enter Valid${formatted.username && "/username"}${formatted.email && "/email"}${formatted.password && "/password"}${formatted.number && "/number"}.`;
 
-      if (formatted.username) messageString + "/username";
-      if (formatted.email) messageString + "/email";
-      if (formatted.password) messageString + "/password";
-      if (formatted.number) messageString + "/number";
-
-      return NextResponse.json<signUpResBody>(
+      return NextResponse.json<SignUpResBody>(
         {
-          message: messageString + ".",
+          message: messageString,
           username: {
             name: "username",
-            message: formatted.username?._errors[0]!,
+            message: formatted.username?._errors[0],
           },
           email: {
             name: "email",
-            message: formatted.email?._errors[0]!,
+            message: formatted.email?._errors[0],
           },
           password: {
             name: "password",
-            message: formatted.password?._errors[0]!,
+            message: formatted.password?._errors[0],
           },
           number: {
             name: "number",
-            message: formatted.number?._errors[0]!,
+            message: formatted.number?._errors[0],
           },
         },
         { status: 403 },
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     // email in databse
     const existingUser = await prisma.user.findFirst({
       where: {
-        email: email,
+        email,
         phoneNumber: number,
       },
       select: {
@@ -75,10 +75,8 @@ export async function POST(request: Request) {
       },
     });
 
-    console.log(existingUser);
-
     if (existingUser) {
-      return NextResponse.json<signUpResBody>(
+      return NextResponse.json<SignUpResBody>(
         {
           message:
             "Email and Number Already Used. Enter different email and number",
@@ -96,7 +94,7 @@ export async function POST(request: Request) {
     await prisma.user.create({
       data: {
         name: username,
-        email: email,
+        email,
         password: hashedPassword,
         phoneNumber: number,
         balance: {
@@ -108,7 +106,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json<signUpResBody>(
+    return NextResponse.json<SignUpResBody>(
       {
         message: "Registration Success",
         data: {
@@ -118,9 +116,8 @@ export async function POST(request: Request) {
       },
       { status: 201 },
     );
-  } catch (error: any) {
-    console.log(error.message);
-    return NextResponse.json<signUpResBody>(
+  } catch (error: unknown) {
+    return NextResponse.json<SignUpResBody>(
       { message: "Something Went Wrong.Try Again" },
       { status: 500 },
     );

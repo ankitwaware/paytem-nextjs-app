@@ -5,9 +5,15 @@ const project = resolve(process.cwd(), "tsconfig.json");
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
   extends: [
+    ...[
+      "@vercel/style-guide/eslint/node",
+      "@vercel/style-guide/eslint/typescript",
+      "@vercel/style-guide/eslint/browser",
+      "@vercel/style-guide/eslint/react",
+      "@vercel/style-guide/eslint/next",
+    ].map(require.resolve),
     "eslint:recommended",
     "prettier",
-    require.resolve("@vercel/style-guide/eslint/next"),
     "turbo",
   ],
   globals: {
@@ -23,6 +29,9 @@ module.exports = {
     "import/resolver": {
       typescript: {
         project,
+      },
+      node: {
+        extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
       },
     },
   },

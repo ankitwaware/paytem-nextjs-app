@@ -1,12 +1,15 @@
 "use client";
-import { addMoneySchema, addMoneyInput } from "../../schema/addMoneySchema";
-import { Form, useForm, FormSubmitHandler } from "react-hook-form";
+import { Form, useForm, type FormSubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
 import Card from "@repo/ui/card";
 import { useRouter } from "next/navigation";
+import {
+  addMoneySchema,
+  type addMoneyInput,
+} from "../../schema/addMoneySchema";
+import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
 
-const supported_banks = [
+const supportedBanks = [
   { name: "Hdfc Bank", redirectUrl: "https://netbanking.hdfcbank.com" },
   { name: "Axis Bank", redirectUrl: "https://www.axisbank.com/" },
   { name: "Kotak Bank", redirectUrl: "https://www.kotakbank.com/" },
@@ -22,7 +25,7 @@ export default function AddMoney({ className }: { className?: string }) {
   } = useForm<addMoneyInput>({
     resolver: zodResolver(addMoneySchema),
     defaultValues: {
-      bank: supported_banks[0]?.name,
+      bank: supportedBanks[0]?.name,
     },
     progressive: true,
   });
@@ -35,27 +38,27 @@ export default function AddMoney({ className }: { className?: string }) {
     const { data } = payload;
     const { bank, amount } = data;
     // redirect url of selected Bank
-    // const redirectUrl = supported_banks.find(
+    // const redirectUrl = supportedBanks.find(
     //   (supp_bank) => supp_bank.name === bank,
     // )?.redirectUrl;
     // window.location.href = redirectUrl || "";
     try {
       // transaction unique token
       const token = (Math.random() * 1000 + 1).toString();
-      // const NewTxn = await createOnrampTransaction(bank, amount, token);
-      // const userId = NewTxn.tnx.userId.toString();
+      const NewTxn = await createOnrampTransaction(bank, amount, token);
+      const userId = NewTxn.tnx.userId.toString();
 
       // fake bank api to handle add amount
       const bankUrl = `http://localhost:8080/hdfcwebhook`;
-      fetch(bankUrl, {
+      await fetch(bankUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: token,
-          // userId: userId,
-          amount: amount,
+          token,
+          userId,
+          amount,
         }),
       });
 
@@ -69,7 +72,7 @@ export default function AddMoney({ className }: { className?: string }) {
         router.refresh();
       }, 3000);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -90,7 +93,7 @@ export default function AddMoney({ className }: { className?: string }) {
             autoComplete="off"
             className="rounded-md border border-slate-300 p-2"
           />
-          {<p className="text-sm">{errors.amount?.message}</p>}
+          <p className="text-sm">{errors.amount?.message}</p>
         </div>
 
         <div className="flex flex-col gap-y-2">
@@ -100,9 +103,9 @@ export default function AddMoney({ className }: { className?: string }) {
             {...register("bank")}
             className="rounded-md border border-slate-300 p-2 capitalize"
           >
-            {supported_banks.map((bank, index) => {
+            {supportedBanks.map((bank) => {
               return (
-                <option defaultValue={bank.name} key={index}>
+                <option defaultValue={bank.name} key={bank.name}>
                   {bank.name}
                 </option>
               );

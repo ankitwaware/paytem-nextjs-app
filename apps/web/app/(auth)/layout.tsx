@@ -1,9 +1,13 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element {
   const pathname = usePathname();
   const { status } = useSession();
   const router = useRouter();

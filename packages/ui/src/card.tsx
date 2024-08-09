@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export default function Card({
   className,
@@ -7,7 +7,7 @@ export default function Card({
 }: {
   className?: string;
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div

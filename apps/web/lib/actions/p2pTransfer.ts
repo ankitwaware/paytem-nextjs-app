@@ -1,19 +1,18 @@
 "use server";
 
+import prisma, { type Balance } from "@repo/database";
 import { getServerSession } from "next-auth";
-import authOptions from "../auth";
-import prisma, { Balance } from "@repo/database";
 import { revalidatePath } from "next/cache";
-import createP2PTransaction from "./createP2PTransaction";
+import authOptions from "../auth";
+import { createP2PTransaction } from "./createP2pTransaction";
 
-export default async function p2pTransferAction(
+export async function p2pTransferAction(
   toPhoneNumber: string,
   amount: string,
   token: string,
 ) {
   try {
     await createP2PTransaction(token, amount, toPhoneNumber);
-
     const session = await getServerSession(authOptions);
     const fromUserId = Number(session?.user.uid);
     // string to number and amount * 100 for decimal amount
@@ -30,7 +29,6 @@ export default async function p2pTransferAction(
         phoneNumber: true,
       },
     });
-    console.log("from acct at ser ac", fromAccount);
 
     if (!fromAccount) {
       return {
@@ -49,8 +47,6 @@ export default async function p2pTransferAction(
       },
     });
 
-    console.log("to acct at ser ac", toAccount);
-
     if (!toAccount) {
       return {
         message: "Failed to send",
@@ -62,7 +58,10 @@ export default async function p2pTransferAction(
     }
 
     // check sender account has sufficient balance
-    if (fromAccount.balance?.amount! < transferAmount) {
+    if (
+      fromAccount.balance?.amount &&
+      fromAccount.balance.amount < transferAmount
+    ) {
       return {
         message: "Failed to send",
         amount: {
@@ -88,8 +87,7 @@ export default async function p2pTransferAction(
       // lock the sender Balance row in db
 
       // SELECT FOR UPDATE is a SQL command that’s useful in the context of transactional workloads. It allows you to “lock” the rows returned by a SELECT query until the entire transaction that query is part of has been committed. Other transactions attempting to access those rows are placed into a time-based queue to wait, and are executed chronologically after the first transaction is completed.
-      const fromBalance =
-        await tx.$queryRaw<Balance>`SELECT * FROM "Balance" WHERE "userId" = ${fromUserId} FOR UPDATE`;
+      await tx.$queryRaw<Balance>`SELECT * FROM "Balance" WHERE "userId" = ${fromUserId} FOR UPDATE`;
 
       await tx.balance.update({
         where: {
@@ -103,8 +101,7 @@ export default async function p2pTransferAction(
       });
 
       // lock the reciver Balance row in db
-      const toBalance =
-        await tx.$queryRaw<Balance>`SELECT * FROM "Balance" WHERE "userId" = ${toAccount.id} FOR UPDATE`;
+      await tx.$queryRaw<Balance>`SELECT * FROM "Balance" WHERE "userId" = ${toAccount.id} FOR UPDATE`;
 
       await tx.balance.update({
         where: {
@@ -118,21 +115,17 @@ export default async function p2pTransferAction(
       });
     });
 
-    console.log("at before create p2p");
-
     // after db transaction success the p2p transaction
-    const newTxn = await prisma.p2pTransaction.update({
+    await prisma.p2pTransaction.update({
       where: {
-        token: token,
-        fromUserId: fromUserId,
+        token,
+        fromUserId,
         toUserId: toAccount.id,
       },
       data: {
         status: "Success",
       },
     });
-
-    console.log("at create p2p serverac", newTxn);
 
     revalidatePath("dashboard/p2p");
 
@@ -141,8 +134,6 @@ export default async function p2pTransferAction(
       message: "Successfully sended",
     };
   } catch (error) {
-    console.log(error);
-
     return {
       message: "somthing went wrong !",
     };
