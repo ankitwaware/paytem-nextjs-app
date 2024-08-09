@@ -3,7 +3,7 @@ import prisma from "@repo/database";
 import * as z from "zod";
 import cors from "cors";
 
-const PORT = 8080 || 8082;
+const PORT = 3001;
 const app = express();
 
 app.use(cors());
