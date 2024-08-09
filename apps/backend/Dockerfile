@@ -6,7 +6,7 @@ RUN apk add --no-cache libc6-compat
 
 # Set working directory
 WORKDIR /app
-RUN yarn global add turbo
+RUN npm install -g turbo
 COPY . .
 RUN turbo prune backend --docker
 
@@ -23,14 +23,9 @@ RUN npm install
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 
-# Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
-
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
-
 RUN npm run build --filter=backend...
+
+EXPOSE 3001
 
 FROM base AS runner
 WORKDIR /app
@@ -41,4 +36,4 @@ RUN adduser --system --uid 1001 expressjs
 USER expressjs
 COPY --from=installer /app .
 
-CMD node apps/api/dist/index.js
+CMD ["node", "apps/api/dist/index.js"]

@@ -1,9 +1,9 @@
 FROM node:18-alpine AS base
 
 FROM base AS builder
-
 RUN apk update
 RUN apk add --no-cache libc6-compat
+
 # Set working directory
 WORKDIR /app
 RUN npm install -g turbo
@@ -23,14 +23,9 @@ RUN npm install
 # Build the project
 COPY --from=builder /app/out/full/ .
 
-# Uncomment and use build args to enable remote caching
-# ARG TURBO_TEAM
-# ENV TURBO_TEAM=$TURBO_TEAM
-
-# ARG TURBO_TOKEN
-# ENV TURBO_TOKEN=$TURBO_TOKEN
-
 RUN npm run build --filter=web...
+
+EXPOSE 3000
 
 FROM base AS runner
 WORKDIR /app
