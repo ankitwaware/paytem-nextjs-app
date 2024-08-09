@@ -3,14 +3,14 @@ version: "3.8"
 services:
   web:
     container_name: web
-      build: 
-        context: .
-        dockerfile: ./app/web/Dockerfile
-      restart: always
-      port: 
-        - 3000:3000
-      networks: 
-        - app_network  
+    build: 
+      context: .
+      dockerfile: ./app/web/Dockerfile
+    restart: always
+    port: 
+      - 3000:3000
+    networks: 
+      - app_network  
   backend:         
     container_name: backend
     build: 
