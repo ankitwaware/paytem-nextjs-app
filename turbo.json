@@ -10,7 +10,7 @@
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET"
   ],
-  "tasks": {
+  "pipeline": {
     "build": {
       "dependsOn": [
         "^build"
@@ -36,15 +36,6 @@
       ],
       "cache": false,
       "persistent": true
-    },
-    "generate": {
-      "cache": false
-    },
-    "db:migrate": {
-      "cache": false
-    },
-    "db:push": {
-      "cache": false
     }
   }
 }
