@@ -12,5 +12,5 @@ RUN npm run build:backend
 
 EXPOSE 3001
 
-WORKDIR /app/apps/backend
+
 CMD ["npm","start"]

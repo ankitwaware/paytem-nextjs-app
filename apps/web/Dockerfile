@@ -12,5 +12,4 @@ RUN npm run build:web
 
 EXPOSE 3000
 
-WORKDIR /app/apps/web
 CMD ["npm","start"]
