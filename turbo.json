@@ -10,7 +10,7 @@
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET"
   ],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": [
         "^build"
