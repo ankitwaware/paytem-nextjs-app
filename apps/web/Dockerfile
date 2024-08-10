@@ -23,12 +23,12 @@ RUN npm install
 # Build the project
 COPY --from=builder /app/out/full/ .
 
-RUN npm run build --filter=web...
+RUN npm run build:web
 
 EXPOSE 3000
 
 FROM base AS runner
-WORKDIR /app
+WORKDIR /apps/web
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
@@ -41,4 +41,4 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
-CMD node apps/web/server.js
+CMD ["npm","start"]

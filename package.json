@@ -4,6 +4,8 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
+    "build:web": "turbo run build --filter=web",
+    "build:backend": "turbo run build --filter=backend",
     "test": "turbo test",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

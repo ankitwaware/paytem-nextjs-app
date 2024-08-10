@@ -23,12 +23,13 @@ RUN npm install
 # Build the project and its dependencies
 COPY --from=builder /app/out/full/ .
 
-RUN npm run build --filter=backend...
+# build backend
+RUN npm run build:backend
 
 EXPOSE 3001
 
 FROM base AS runner
-WORKDIR /app
+WORKDIR /apps/backend
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 expressjs
@@ -36,4 +37,4 @@ RUN adduser --system --uid 1001 expressjs
 USER expressjs
 COPY --from=installer /app .
 
-CMD ["node", "apps/api/dist/index.js"]
+CMD ["npm", "start"]
