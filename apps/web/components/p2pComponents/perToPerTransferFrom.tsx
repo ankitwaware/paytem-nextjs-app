@@ -3,8 +3,8 @@
 import Card from "@repo/ui/card";
 import { Form, type FormSubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormInput from "../auth/formInput";
-import FormBtn from "../auth/formBtn";
+import FormInput from "../authComponents/formInput";
+import FormBtn from "../authComponents/formBtn";
 import PerToPerInputSchema, {
   type PerToPerInputType,
 } from "../../schema/personToPersonSchema";

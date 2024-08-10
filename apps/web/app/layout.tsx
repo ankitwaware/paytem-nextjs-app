@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Providers from "../components/providers";
-import Appbar from "../components/navBar/appbar";
+import Appbar from "../components/navBarComponents/appbar";
 
 export const metadata: Metadata = {
   title: "Paytem App",
