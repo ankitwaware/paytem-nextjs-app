@@ -1,14 +1,10 @@
 import type { NextAuthOptions, User } from "next-auth";
+import prisma from "@repo/database/client";
 import credentialsProvider from "next-auth/providers/credentials";
-import prisma from "@repo/database";
 import { compare } from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
 import type { JWT } from "next-auth/jwt";
-import type {
-  AuthUser,
-  CustomSession,
-  Token,
-} from "../types/interfaces";
+import type { AuthUser, CustomSession, Token } from "../types/interfaces";
 import { genrateJWT } from "./functions/genrateJwt";
 
 const authOptions = {
@@ -35,7 +31,7 @@ const authOptions = {
         },
         password: { label: "password", type: "password" },
       },
-      async authorize(credentials): Promise<AuthUser | null> {
+      async authorize(credentials): Promise<AuthUser> {
         try {
           // find user in Databse
           const userdb = await prisma.user.findFirst({
@@ -54,7 +50,7 @@ const authOptions = {
 
           const correctPassword = await compare(
             credentials?.password || "",
-            userdb.password || "",
+            userdb.password,
           );
 
           if (!correctPassword) return null;
@@ -81,16 +77,20 @@ const authOptions = {
   callbacks: {
     jwt: ({ token, user }: { token: JWT; user: User }) => {
       const newToken = token as Token;
-      const newUser = user as AuthUser;
-      newToken.uid = newUser.uid;
-      newToken.jwtToken = newUser.jwtToken;
+      const userData = user as AuthUser;
+      if (userData && userData.uid && userData.jwtToken) {
+        newToken.uid = userData.uid;
+        newToken.jwtToken = userData.jwtToken;
+      }
       return newToken;
     },
     session: ({ session, token }) => {
       const newSession = session as CustomSession;
       const newToken = token as Token;
-      newSession.user.uid = newToken.uid;
-      newSession.user.jwtToken = newToken.jwtToken;
+      if (newToken.uid && newToken.jwtToken) {
+        newSession.user.uid = newToken.uid;
+        newSession.user.jwtToken = newToken.jwtToken;
+      }
       return newSession;
     },
   },

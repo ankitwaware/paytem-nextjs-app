@@ -1,7 +1,7 @@
 FROM node:20-alpine 
 
 # Set working directory
-WORKDIR /app
+WORKDIR /user/backend/src
 
 COPY . .
 
@@ -11,6 +11,5 @@ RUN npm install
 RUN npm run build:backend
 
 EXPOSE 3001
-
 
 CMD ["npm","start"]

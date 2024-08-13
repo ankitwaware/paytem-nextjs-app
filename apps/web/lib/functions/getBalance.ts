@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import prisma from "@repo/database";
+import prisma from "@repo/database/client";
 import authOptions from "../auth";
 
 export default async function getBalance() {

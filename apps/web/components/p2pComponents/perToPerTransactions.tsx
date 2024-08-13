@@ -1,4 +1,5 @@
 import Card from "@repo/ui/card";
+import type { Txn } from "../../types/types";
 import getP2PTransactions from "../../lib/functions/getP2pTransactions";
 import PToPTxnItem from "./perTransactionItem";
 
@@ -7,7 +8,7 @@ export default async function PerToPerTransactions({
 }: {
   className?: string;
 }) {
-  const transactions = await getP2PTransactions();
+  const transactions:Txn[] = await getP2PTransactions();
 
   return (
     <Card title="Recent Transactions" className={`${className}`}>
@@ -17,7 +18,7 @@ export default async function PerToPerTransactions({
         </div>
       ) : (
         <>
-          {transactions.map((transaction) => {
+          {transactions.map((txn:Txn) => {
             const {
               id,
               token,
@@ -28,7 +29,7 @@ export default async function PerToPerTransactions({
               toUserId,
               toUser: { phoneNumber },
               fromUser: { phoneNumber: fromUserPhoneNumber },
-            } = transaction;
+            } = txn;
 
             return (
               <PToPTxnItem

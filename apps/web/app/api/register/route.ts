@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
-import prisma from "@repo/database";
+import prisma from "@repo/database/client";
 import { SIgnupFormSchema } from "../../../schema/authFormSchema";
 
 export interface SignUpResBody {
   message: string | undefined;
-  username?: { name: "username"; message:  string | undefined };
-  email?: { name: "email"; message:  string | undefined };
-  number?: { name: "number"; message:  string | undefined };
-  password?: { name: "password"; message:  string | undefined };
+  username?: { name: "username"; message: string | undefined };
+  email?: { name: "email"; message: string | undefined };
+  number?: { name: "number"; message: string | undefined };
+  password?: { name: "password"; message: string | undefined };
   data?: {
     email: string;
     password: string;

@@ -20,7 +20,9 @@ export interface Token extends JWT {
   jwtToken: string;
 }
 
-export interface AuthUser extends User {
-  uid: string;
-  jwtToken: string;
-}
+export type AuthUser =
+  | ({
+      uid: string | undefined;
+      jwtToken: string | undefined;
+    } & User)
+  | null;

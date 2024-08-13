@@ -1,6 +1,6 @@
 "use server";
 
-import prisma, { type Balance } from "@repo/database";
+import prisma, { type Balance } from "@repo/database/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import authOptions from "../auth";

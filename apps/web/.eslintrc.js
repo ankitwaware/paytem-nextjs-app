@@ -37,6 +37,8 @@ module.exports = {
       {
         "checksVoidReturn": false
       }
-    ]
+    ],
+    "@typescript-eslint/no-unsafe-call": "off",
+    "eslint-comments/require-description": ["error", { "ignore": ["eslint-disable-line"] }]
   },
 };

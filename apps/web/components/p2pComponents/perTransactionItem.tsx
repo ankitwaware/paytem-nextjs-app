@@ -1,4 +1,3 @@
-import { type onRampStatus } from "@repo/database";
 import { getServerSession } from "next-auth";
 import authOptions from "../../lib/auth";
 
@@ -7,7 +6,7 @@ export interface P2PTransactionItemProp {
   id: number;
   token: string;
   amount: number;
-  status: onRampStatus;
+  status: "Success" | "failure" | "Processing";
   timeStamp: Date;
   fromUserId: number;
   toUserId: number;
@@ -16,13 +15,10 @@ export interface P2PTransactionItemProp {
 }
 
 export default async function PToPTxnItem({
-  id,
-  token,
   amount,
   status,
   timeStamp,
   fromUserId,
-  toUserId,
   toUserPhoneNumber,
   fromUserPhoneNumber,
   className,
@@ -47,7 +43,6 @@ export default async function PToPTxnItem({
 
       <p>{status}</p>
       <p>
-        {/* if current user send then reciver phone number else other user sended phone number */}
         {currentUserId === fromUserId ? toUserPhoneNumber : fromUserPhoneNumber}
       </p>
       <p>+ Rs {Indianrupee}</p>

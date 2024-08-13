@@ -1,9 +1,7 @@
-import { type onRampStatus } from "@repo/database";
-
 export interface TransactionItemProp {
   className?: string;
   id?: number;
-  status: onRampStatus;
+  status: "Success" | "failure" | "Processing";
   amount: number;
   provider: string;
   startTime: Date;
