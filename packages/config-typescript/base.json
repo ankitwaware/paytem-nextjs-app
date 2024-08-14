@@ -12,23 +12,20 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
     "moduleDetection": "force",
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022",
+    "composite": false,
     "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
     "inlineSources": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
-    "strictNullChecks": true,
-    "typeRoots": ["./node_modules/@types"]
   },
   "exclude": [
     "node_modules"

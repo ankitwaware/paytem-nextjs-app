@@ -1,22 +1,14 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import prisma from "@repo/database/client";
-import * as z from "zod";
+import { paymentInfoType, paymentInfoSchema } from "../zod/schema"
 import cors from "cors";
 
-const PORT = 8080;
+const PORT = 3001;
 const app = express();
 
 app.use(cors());
 // middleware that only parses json and only looks at requests where the Content-Type header matches the type option.
 app.use(express.json());
-
-const paymentInfoSchema = z.object({
-  token: z.string({ message: "Invalid token" }),
-  userId: z.string({ message: "Invalid userId" }),
-  amount: z.string(),
-});
-
-type paymentInfoType = z.infer<typeof paymentInfoSchema>;
 
 const bankPOSTHandler = async (req: Request, res: Response) => {
   const reqBody: paymentInfoType = req.body;
@@ -61,24 +53,14 @@ const bankPOSTHandler = async (req: Request, res: Response) => {
   }
 };
 
+app.get("/", (req, res) => {
+  return res.json({ msg: "Healthy Server" });
+});
+
 // #10 added dummy bank_webhook_backend
 app.post("/hdfcwebhook", bankPOSTHandler);
 app.post("/axiswebhook", bankPOSTHandler);
 app.post("/kotakwebhook", bankPOSTHandler);
-
-const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  console.log(err.message);
-  return res.status(500).json({
-    message: "I dont have that",
-  });
-};
-
-app.use("/*", errorHandler);
 
 app.listen(PORT, () => {
   console.log(`bank webhook running on port:${PORT}...`);

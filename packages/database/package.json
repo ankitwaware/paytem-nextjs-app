@@ -6,7 +6,6 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "tsx src/seed.ts",
-    "dev": "tsup src/* --watch",
     "format": "prisma format",
     "generate": "prisma generate",
     "lint": "eslint . --max-warnings 0",
@@ -28,6 +27,6 @@
     "typescript": "^5.3.3"
   },
   "exports": {
-    "./client": "./src/index.ts"
+    "./client": "./src/client.ts"
   }
 }

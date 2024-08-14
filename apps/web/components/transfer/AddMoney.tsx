@@ -49,7 +49,7 @@ export default function AddMoney({ className }: { className?: string }) {
       const userId = NewTxn.tnx.userId.toString();
 
       // fake bank api to handle add amount
-      const bankUrl = `http://localhost:8080/hdfcwebhook`;
+      const bankUrl = `http://localhost:3001/hdfcwebhook`;
       await fetch(bankUrl, {
         method: "POST",
         headers: {
