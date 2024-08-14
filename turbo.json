@@ -12,7 +12,7 @@
   "tasks": {
     "build": {
       "dependsOn": [
-        "^db:generate",
+        "generate",
         "^build"
       ],
       "outputs": [
