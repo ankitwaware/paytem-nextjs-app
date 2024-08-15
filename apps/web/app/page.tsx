@@ -1,16 +1,16 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
-export default function Page(): React.JSX.Element {
+export default function Page() {
   const session = useSession();
 
   if (session.data?.user) {
-    redirect("/dashboard");
-  } else {
-    redirect("/signin");
-  } 
+    redirect("/dashboard",RedirectType.push);
+  }
+
+  redirect("/signin", RedirectType.push);
 
   return <section>landing Page</section>;
 }

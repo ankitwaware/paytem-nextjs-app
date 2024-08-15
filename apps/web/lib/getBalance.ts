@@ -1,16 +1,20 @@
 import { getServerSession } from "next-auth";
 import prisma from "@repo/database/client";
-import authOptions from "../auth";
+import authOptions from "./auth";
 
-export default async function getOnRampTransactions() {
+export default async function getBalance() {
   const session = await getServerSession(authOptions);
   const userId = Number(session?.user.uid);
 
-  const userTransactions = await prisma.onRampTransaction.findMany({
+  const userBalances = await prisma.balance.findUnique({
     where: {
       userId,
     },
+    select: {
+      amount: true,
+      locked: true,
+    },
   });
 
-  return userTransactions;
+  return userBalances;
 }

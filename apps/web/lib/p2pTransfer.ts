@@ -3,10 +3,10 @@
 import prisma, { type Balance } from "@repo/database/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import authOptions from "../auth";
-import { createP2PTransaction } from "./createP2pTransaction";
+import authOptions from "./auth";
+import  createP2PTransaction  from "./createP2pTransaction";
 
-export async function p2pTransferAction(
+export default async function p2pTransferAction(
   toPhoneNumber: string,
   amount: string,
   token: string,

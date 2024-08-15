@@ -1,7 +1,7 @@
 import Card from "@repo/ui/card";
 import type { Txn } from "../types/types";
-import getP2PTransactions from "../../lib/functions/getP2pTransactions";
 import PToPTxnItem from "./perTransactionItem";
+import getP2PTransactions from "../lib/getP2pTransactions";
 
 export default async function PerToPerTransactions({
   className,

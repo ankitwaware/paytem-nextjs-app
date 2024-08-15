@@ -1,6 +1,6 @@
 import Card from "@repo/ui/card";
 import BalanceItem from "@repo/ui/balanceItem";
-import getBalance from "../../lib/functions/getBalance";
+import getBalance from "../lib/getBalance";
 
 export default async function Balance({ className }: { className?: string }) {
   const userBalancres = await getBalance();

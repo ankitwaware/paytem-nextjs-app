@@ -2,9 +2,9 @@
 
 import prisma from "@repo/database/client";
 import { getServerSession } from "next-auth";
-import authOptions from "../auth";
+import authOptions from "./auth";
 
-export async function createP2PTransaction(
+export default async function createP2PTransaction(
   token: string,
   amount: string,
   toPhoneNumber: string,

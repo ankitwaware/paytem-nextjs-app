@@ -1,7 +1,7 @@
 import Card from "@repo/ui/card";
 import TransactionItem from "@repo/ui/transactionItem";
 import type { OnRampTxn } from "../types/types";
-import getOnRampTransactions from "../../lib/functions/getOnRampTransactions";
+import getOnRampTransactions from "../lib/getOnRampTransactions";
 
 export default async function OnRampTransaction({
   className,

@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import authOptions from "../../lib/auth";
+import authOptions from "../lib/auth";
 
 export interface P2PTransactionItemProp {
   className?: string;

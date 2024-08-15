@@ -3,10 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {
-  type SIgnInFormData,
-  SIgnInFormSchema,
-} from "../schema/authFormSchema";
+import { type SIgnInFormData, SIgnInFormSchema } from "./zod/authFormSchema";
 import FormInput from "./formInput";
 import FormBtn from "./formBtn";
 

@@ -1,6 +1,6 @@
 import { importJWK, type JWTPayload, SignJWT } from "jose";
 
-export const genrateJWT = async (payload: JWTPayload) => {
+export default async function genrateJWT(payload: JWTPayload) {
   const secret = process.env.JWT_SECRET || "secret";
 
   const jwk = await importJWK({ k: secret, alg: "HS256", kty: "oct" });
@@ -12,4 +12,4 @@ export const genrateJWT = async (payload: JWTPayload) => {
     .sign(jwk);
 
   return jwt;
-};
+}

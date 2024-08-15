@@ -1,6 +1,12 @@
 import { ReactNode } from "react";
-import DashboardLayout from "../../components/dashboardLayout";
+import Sidebar from "../../components/sidebar";
+
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return  <DashboardLayout children={children} />;
+  return (
+    <div className="flex bg-slate-200">
+      <Sidebar />
+      {children}
+    </div>
+  );
 }

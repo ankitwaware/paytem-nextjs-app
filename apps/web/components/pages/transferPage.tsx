@@ -1,6 +1,6 @@
-import AddMoney from "../transferComponents/addMoney";
-import Balance from "../transferComponents/balance";
-import OnRampTransaction from "../transferComponents/onRampTransaction";
+import AddMoney from "../addMoney";
+import Balance from "../balance";
+import OnRampTransaction from "../onRampTransaction";
 
 export default function TransferPage() {
   return (

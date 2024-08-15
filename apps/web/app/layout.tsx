@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Provider from "../components/providers";
-import Appbar from "../components/navBarComponents/appbar";
+import ProviderRoot from "../components/providers";
+import Navbar from "../components/navbar";
 
 export const metadata: Metadata = {
   title: "Paytem App",
@@ -21,12 +21,12 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en">
-      <Provider>
+      <ProviderRoot>
         <body className={inter.className}>
-          <Appbar />
+          <Navbar />
           {children}
         </body>
-      </Provider>
+      </ProviderRoot>
     </html>
   );
 }

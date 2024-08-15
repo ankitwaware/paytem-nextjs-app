@@ -3,13 +3,13 @@
 import Card from "@repo/ui/card";
 import { Form, type FormSubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormInput from "../authComponents/formInput";
-import FormBtn from "../authComponents/formBtn";
+import FormInput from "./formInput";
+import FormBtn from "./formBtn";
 import {
   PerToPerInputType,
   PerToPerInputSchema,
-} from "../schema/personToPersonSchema";
-import { p2pTransferAction } from "../../lib/actions/p2pTransfer";
+} from "./zod/personToPersonSchema";
+import p2pTransferAction from "../lib/p2pTransfer";
 
 export default function PerToPerTranferForm() {
   const {

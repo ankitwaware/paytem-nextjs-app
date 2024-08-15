@@ -2,9 +2,9 @@
 import prisma from "@repo/database/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
-import authOptions from "../auth";
+import authOptions from "./auth";
 
-export async function createOnrampTransaction(
+export default async function createOnrampTransaction(
   provider: string,
   amount: string,
   token: string,

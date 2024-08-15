@@ -1,5 +1,5 @@
-import PerToPerTransactions from "../pTopComponents/perToPerTransactions";
-import PerToPerTranferForm from "../pTopComponents/perToPerTransferFrom";
+import PerToPerTransactions from "../perToPerTransactions";
+import PerToPerTranferForm from "../perToPerTransferFrom";
 
 export default function PerToPerPage() {
   return (

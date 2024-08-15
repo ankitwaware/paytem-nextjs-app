@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import prisma from "@repo/database/client";
-import { SIgnupFormSchema } from "../../../components/schema/authFormSchema";
+import { SIgnupFormSchema } from "../../../components/zod/authFormSchema";
 
 export interface SignUpResBody {
   message: string | undefined;

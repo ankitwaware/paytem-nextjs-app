@@ -3,8 +3,8 @@ import { Form, useForm, type FormSubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Card from "@repo/ui/card";
 import { useRouter } from "next/navigation";
-import { addMoneySchema, type addMoneyInput } from "../schema/addMoneySchema";
-import { createOnrampTransaction } from "../../lib/actions/createOnrampTransaction";
+import { addMoneySchema, type addMoneyInput } from "./zod/addMoneySchema";
+import createOnrampTransaction from "../lib/createOnrampTransaction";
 
 const supportedBanks = [
   { name: "Hdfc Bank", redirectUrl: "https://netbanking.hdfcbank.com" },
