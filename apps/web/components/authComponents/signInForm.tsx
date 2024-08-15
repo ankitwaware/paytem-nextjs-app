@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   type SIgnInFormData,
   SIgnInFormSchema,
-} from "../../schema/authFormSchema";
+} from "../schema/authFormSchema";
 import FormInput from "./formInput";
 import FormBtn from "./formBtn";
 

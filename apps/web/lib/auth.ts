@@ -4,7 +4,11 @@ import credentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
 import type { JWT } from "next-auth/jwt";
-import type { AuthUser, CustomSession, Token } from "../types/interfaces";
+import type {
+  AuthUser,
+  CustomSession,
+  Token,
+} from "../components/types/interfaces";
 import { genrateJWT } from "./functions/genrateJwt";
 
 const authOptions = {

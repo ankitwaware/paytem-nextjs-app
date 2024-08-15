@@ -1,5 +1,5 @@
-import OnRampTransaction from "../../../components/transfer/onRampTransaction";
+import TransactionPage from "../../../components/pages/transactionPage";
 
 export default function Page() {
-  return <OnRampTransaction className="m-8 w-full" />;
+  return <TransactionPage />;
 }

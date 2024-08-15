@@ -5,9 +5,10 @@ import { Form, type FormSubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "../authComponents/formInput";
 import FormBtn from "../authComponents/formBtn";
-import PerToPerInputSchema, {
-  type PerToPerInputType,
-} from "../../schema/personToPersonSchema";
+import {
+  PerToPerInputType,
+  PerToPerInputSchema,
+} from "../schema/personToPersonSchema";
 import { p2pTransferAction } from "../../lib/actions/p2pTransfer";
 
 export default function PerToPerTranferForm() {

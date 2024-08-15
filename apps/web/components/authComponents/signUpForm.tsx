@@ -6,7 +6,7 @@ import { Form, useForm } from "react-hook-form";
 import {
   type SIgnupFormData,
   SIgnupFormSchema,
-} from "../../schema/authFormSchema";
+} from "../schema/authFormSchema";
 import { type SignUpResBody } from "../../app/api/register/route";
 import FormInput from "./formInput";
 import FormBtn from "./formBtn";

@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const PerToPerInputSchema = z.object({
+export const PerToPerInputSchema = z.object({
   phoneNumber: z
     .string()
     .min(10, { message: "Phone Nubmer must be at 10 digit." })
@@ -35,5 +35,4 @@ const PerToPerInputSchema = z.object({
   }),
 });
 
-export default PerToPerInputSchema;
 export type PerToPerInputType = z.infer<typeof PerToPerInputSchema>;

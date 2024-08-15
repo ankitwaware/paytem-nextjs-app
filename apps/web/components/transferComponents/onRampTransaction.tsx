@@ -1,6 +1,6 @@
 import Card from "@repo/ui/card";
 import TransactionItem from "@repo/ui/transactionItem";
-import type { OnRampTxn } from "../../types/types";
+import type { OnRampTxn } from "../types/types";
 import getOnRampTransactions from "../../lib/functions/getOnRampTransactions";
 
 export default async function OnRampTransaction({
@@ -8,7 +8,7 @@ export default async function OnRampTransaction({
 }: {
   className?: string;
 }) {
-  const transactions:OnRampTxn[] = await getOnRampTransactions();
+  const transactions: OnRampTxn[] = await getOnRampTransactions();
   return (
     <Card title="Recent Transactions" className={`${className}`}>
       {transactions.length === 0 ? (
@@ -17,7 +17,7 @@ export default async function OnRampTransaction({
         </div>
       ) : (
         <>
-          {transactions.map((transaction:OnRampTxn) => {
+          {transactions.map((transaction: OnRampTxn) => {
             const { status, id, startTime, amount, provider, token } =
               transaction;
             return (
