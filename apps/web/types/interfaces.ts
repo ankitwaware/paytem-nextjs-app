@@ -26,3 +26,15 @@ export type AuthUser =
       jwtToken: string | undefined;
     } & User)
   | null;
+
+export interface SignUpResBody {
+  message: string | undefined;
+  username?: { name: "username"; message: string | undefined };
+  email?: { name: "email"; message: string | undefined };
+  number?: { name: "number"; message: string | undefined };
+  password?: { name: "password"; message: string | undefined };
+  data?: {
+    email: string;
+    password: string;
+  };
+}

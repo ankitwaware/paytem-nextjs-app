@@ -7,14 +7,12 @@ export default function Layout({
   children,
 }: {
   children: ReactNode;
-}): JSX.Element {
+}) {
   const pathname = usePathname();
   const { status } = useSession();
   const router = useRouter();
 
-  if (status === "authenticated") {
-    router.push("/dashboard");
-  }
+  if (status === "authenticated") router.push("/dashboard");
 
   return (
     <section className="grid h-screen place-items-center bg-white">

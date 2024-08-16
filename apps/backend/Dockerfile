@@ -1,12 +1,18 @@
 FROM node:20-alpine 
 
 # Set working directory
-WORKDIR /user/backend/src
+WORKDIR /user/backend
 
-COPY . .
+COPY package* .
 
 # First install the dependencies (as they change less often)
 RUN npm install
+
+COPY tsconfig.json .
+COPY Dockerfile .
+COPY ZOD .
+
+COPY . .
 
 RUN npm run build:backend
 

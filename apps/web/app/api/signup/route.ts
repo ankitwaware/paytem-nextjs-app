@@ -1,28 +1,17 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import prisma from "@repo/database/client";
-import { SIgnupFormSchema } from "../../../components/zod/authFormSchema";
+import {
+  SIgnupFormData,
+  SIgnupFormSchema,
+} from "../../../components/zod/authFormSchema";
+import { SignUpResBody } from "../../../types/interfaces";
 
-export interface SignUpResBody {
-  message: string | undefined;
-  username?: { name: "username"; message: string | undefined };
-  email?: { name: "email"; message: string | undefined };
-  number?: { name: "number"; message: string | undefined };
-  password?: { name: "password"; message: string | undefined };
-  data?: {
-    email: string;
-    password: string;
-  };
-}
 
 export async function POST(request: Request) {
   try {
-    const { username, email, password, number } = (await request.json()) as {
-      username: string;
-      email: string;
-      password: string;
-      number: string;
-    };
+    const { username, email, password, number } =
+      (await request.json()) as SIgnupFormData;
 
     //VALIDATION FOR SIGNUP ON SERVER
     const result = SIgnupFormSchema.safeParse({
@@ -80,6 +69,10 @@ export async function POST(request: Request) {
         {
           message:
             "Email and Number Already Used. Enter different email and number",
+          email: {
+            name: "email",
+            message: "Enter different email",
+          },
         },
         {
           status: 401,
@@ -88,7 +81,7 @@ export async function POST(request: Request) {
     }
 
     // hashing Password
-    const hashedPassword = await hash(password, 10);
+    const hashedPassword = await hash(password,10);
 
     // creating new user in db
     await prisma.user.create({

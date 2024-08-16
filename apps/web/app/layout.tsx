@@ -21,12 +21,12 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ProviderRoot>
+      <ProviderRoot>
+        <body className={inter.className}>
           <Navbar />
           {children}
-        </ProviderRoot>
-      </body>
+        </body>
+      </ProviderRoot>
     </html>
   );
 }
