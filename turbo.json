@@ -68,6 +68,15 @@
         ".env"
       ]
     },
+    "dev:web": {
+      "dependsOn": [
+        "generate"
+      ],
+      "cache": false,
+      "inputs": [
+        ".env"
+      ]
+    },
     "db:push": {
       "cache": false
     }

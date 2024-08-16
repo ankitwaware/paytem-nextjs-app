@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -- turbo dev",
+    "dev#web": "dotenv -- turbo run dev:web",
     "start#web": "dotenv -- turbo run start:web",
     "build": "dotenv -- turbo build",
     "studio": "dotenv -- turbo studio",
