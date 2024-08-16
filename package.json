@@ -2,10 +2,12 @@
   "name": "my-turborepo",
   "private": true,
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "build:web": "turbo run build --filter=web...",
-    "build:backend": "turbo run build --filter=backend...",
+    "dev": "dotenv -- turbo dev",
+    "start#web": "dotenv -- turbo run start:web",
+    "build": "dotenv -- turbo build",
+    "studio": "dotenv -- turbo studio",
+    "build:web": "dotenv -- turbo run build --filter=web...",
+    "build:backend": "dotenv -- turbo run build --filter=backend...",
     "test": "turbo test",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -16,9 +18,11 @@
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
     "prettier": "^3.3.3",
-    "typescript": "^5.4.5",
-    "prettier-plugin-tailwindcss": "^0.6.5"
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "typescript": "^5.4.5"
   },
   "engines": {
     "node": ">=18"

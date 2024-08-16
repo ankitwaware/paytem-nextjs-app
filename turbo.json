@@ -4,10 +4,12 @@
     "**/.env.*local"
   ],
   "globalEnv": [
+    "NEXTAUTH_URL",
     "NEXTAUTH_SECRET",
     "JWT_SECRET",
     "GOOGLE_CLIENT_ID",
-    "GOOGLE_CLIENT_SECRET"
+    "GOOGLE_CLIENT_SECRET",
+    "DATABASE_URL"
   ],
   "tasks": {
     "build": {
@@ -18,6 +20,17 @@
       "outputs": [
         ".next/**",
         "!.next/cache/**"
+      ],
+      "inputs": [
+        ".env",
+        ".env.local"
+      ],
+      "env": [
+        "NEXTAUTH_URL",
+        "NEXTAUTH_SECRET",
+        "JWT_SECRET",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
       ]
     },
     "lint": {
@@ -35,7 +48,25 @@
       "cache": false
     },
     "generate": {
-      "cache": false
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
+    "studio": {
+      "dependsOn": [
+        "^studio"
+      ],
+      "cache": false,
+      "env": [
+        "DATABASE_URL"
+      ]
+    },
+    "start:web": {
+      "cache": false,
+      "inputs": [
+        ".env"
+      ]
     },
     "db:push": {
       "cache": false
