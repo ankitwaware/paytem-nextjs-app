@@ -1,10 +1,10 @@
 import Card from "@repo/ui/card";
-import BalanceItem from "@repo/ui/balanceItem";
+import BalanceItem from "@repo/ui/balCard";
 import getBalance from "../lib/getBalance";
 
 export default async function Balance({ className }: { className?: string }) {
   const userBalancres = await getBalance();
-  const totalBal = (userBalancres?.amount || 0) + (userBalancres?.locked || 0);
+  const totalBal = userBalancres?.amount!  + userBalancres?.locked!;
 
   return (
     <Card title="Balance" className={`${className}`}>

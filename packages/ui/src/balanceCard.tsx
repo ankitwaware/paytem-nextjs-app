@@ -1,5 +1,5 @@
 interface BalanceItemProp {
-  balance?: number;
+  balance?: number | undefined;
   className?: string;
   title: "Unlocked" | "locked" | "Total";
 }

@@ -27,7 +27,7 @@
   },
   "exports": {
     "./card": "./src/card.tsx",
-    "./balanceItem": "./src/balanceItem.tsx",
-    "./transactionItem": "./src/transactionItem.tsx"
+    "./balCard": "./src/balanceCard.tsx",
+    "./txnItemCard": "./src/txnCard.tsx"
   }
 }

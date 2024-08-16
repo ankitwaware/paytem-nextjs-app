@@ -1,5 +1,5 @@
 import Card from "@repo/ui/card";
-import TransactionItem from "@repo/ui/transactionItem";
+import TransactionItem from "@repo/ui/txnItemCard";
 import type { OnRampTxn } from "../types/types";
 import getOnRampTransactions from "../lib/getOnRampTransactions";
 
