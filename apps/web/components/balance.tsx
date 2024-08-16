@@ -8,8 +8,8 @@ export default async function Balance({ className }: { className?: string }) {
 
   return (
     <Card title="Balance" className={`${className}`}>
-      <BalanceItem title="Unlocked" balance={userBalancres?.amount} />
-      <BalanceItem title="locked" balance={userBalancres?.locked} />
+      <BalanceItem title="Unlocked" balance={userBalancres?.amount || 0} />
+      <BalanceItem title="locked" balance={userBalancres?.amount || 0} />
       <BalanceItem title="Total" balance={totalBal} />
     </Card>
   );

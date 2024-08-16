@@ -23,10 +23,7 @@ export default async function PToPTxnItem({
   fromUserPhoneNumber,
   className,
 }: P2PTransactionItemProp) {
-  const Indianrupee = new Intl.NumberFormat("en-In", {
-    style: "currency",
-    currency: "INR",
-  }).format(amount / 100);
+
   const session = await getServerSession(authOptions);
   const currentUserId = Number(session?.user.uid);
 
@@ -45,7 +42,7 @@ export default async function PToPTxnItem({
       <p>
         {currentUserId === fromUserId ? toUserPhoneNumber : fromUserPhoneNumber}
       </p>
-      <p>+ Rs {Indianrupee}</p>
+      <p>+ Rs {amount / 100}</p>
     </div>
   );
 }

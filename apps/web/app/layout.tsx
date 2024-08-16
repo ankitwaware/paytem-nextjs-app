@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import ProviderRoot from "../components/providers";
+import ProviderRoot from "../components/providerRoot";
 import Navbar from "../components/navbar";
 
 export const metadata: Metadata = {
@@ -21,12 +21,12 @@ export default function RootLayout({
 }): React.JSX.Element {
   return (
     <html lang="en">
-      <ProviderRoot>
-        <body className={inter.className}>
+      <body className={inter.className}>
+        <ProviderRoot>
           <Navbar />
           {children}
-        </body>
-      </ProviderRoot>
+        </ProviderRoot>
+      </body>
     </html>
   );
 }
