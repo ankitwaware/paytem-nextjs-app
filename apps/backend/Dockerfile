@@ -1,21 +1,32 @@
-FROM node:20-alpine 
+FROM node:20-alpine  AS base
 
+
+FROM base AS builder
+RUN apk update
+RUN apk add --no-cache libc6-compat
 # Set working directory
-WORKDIR /user/backend
+WORKDIR /app
 
-COPY package* .
-
-# First install the dependencies (as they change less often)
-RUN npm install
-
-COPY tsconfig.json .
-COPY Dockerfile .
-COPY ZOD .
-
+RUN npm install -g turbo
 COPY . .
+RUN turbo prune backend --docker
+
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# First install dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
+RUN npm install
 
 RUN npm run build:backend
 
+FROM base AS runner
+WORKDIR /app
+
 EXPOSE 3001
 
-CMD ["npm","start"]
+CMD ["node","apps/backend/dist/index.js"]

@@ -1,15 +1,29 @@
-FROM node:20-alpine 
+FROM node:20-alpine AS base
 
+FROM base AS builder
+RUN apk update
+RUN apk add --no-cache libc6-compat
 # Set working directory
-WORKDIR /user/webApp/src
-
+WORKDIR /app
+RUN npm install -g turbo
 COPY . .
+RUN turbo prune web --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk update
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 
 # First install the dependencies (as they change less often)
+COPY --from=builder /app/out/json/ .
 RUN npm install
 
+# Build the project
+COPY --from=builder /app/out/full/ .
 RUN npm run build:web
 
 EXPOSE 3000
 
+WORKDIR /apps/web
 CMD ["npm","start"]
